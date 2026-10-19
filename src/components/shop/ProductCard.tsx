@@ -10,7 +10,7 @@ export function ProductCard({ p }: { p: Product }) {
     <div className="group flex flex-col overflow-hidden rounded-md border border-border bg-card transition duration-300 hover:border-primary/60">
       <Link to="/product/$id" params={{ id: p.id }} className="relative block aspect-square overflow-hidden bg-image-surface">
         <img src={p.image} alt={p.name} loading="lazy" width={816} height={816} className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
-        {p.badge && <span className="absolute left-3 top-3 rounded-sm bg-gold px-3 py-1 text-xs font-bold text-accent-foreground">{p.badge}</span>}
+        {p.badge && <span className="absolute left-3 top-3 rounded-sm bg-gold px-3 py-1 text-xs font-bold text-primary-foreground">{p.badge}</span>}
       </Link>
       <div className="flex flex-1 flex-col p-4">
         <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{p.mint} · {p.fineness}</p>
