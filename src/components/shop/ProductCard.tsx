@@ -21,7 +21,7 @@ export function ProductCard({ p }: { p: Product }) {
             {out ? "Изчерпан" : p.stock < 10 ? `Последни ${p.stock} бр.` : "В наличност"}
           </p>
           <button disabled={out} onClick={() => add(p.id)} className="mt-3 w-full rounded-full bg-primary py-2.5 text-sm font-bold text-primary-foreground transition hover:opacity-90 disabled:cursor-not-allowed disabled:bg-muted disabled:text-muted-foreground">
-            {out ? "Уведоми ме" : "Добави в количката"}
+            {out ? "Изчерпан" : "Добави в количката"}
           </button>
         </div>
       </div>
