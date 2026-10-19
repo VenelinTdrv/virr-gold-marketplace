@@ -94,7 +94,7 @@ function Shop() {
       <section className="relative overflow-hidden">
         <img src={hero} alt="Златни кюлчета и монети" width={1600} height={800} className="absolute inset-0 h-full w-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-r from-primary-deep via-primary-deep/80 to-transparent" />
-        <div className="relative mx-auto max-w-7xl px-4 py-20 md:py-28">
+        <div className="relative mx-auto max-w-7xl px-4 py-12 md:py-16">
           <p className="text-xs font-bold uppercase tracking-[0.25em] text-gold">Virr Gold</p>
           <h1 className="mt-3 max-w-xl font-display text-4xl font-bold leading-tight text-primary-foreground md:text-5xl">Инвестиционно злато, на което можете да разчитате.</h1>
           <p className="mt-4 max-w-lg text-primary-foreground/85">Кюлчета, инвестиционни и колекционерски монети от водещи световни рафинерии. С гарантирано обратно изкупуване.</p>
