@@ -40,3 +40,5 @@ body.dark .checkopt:hover{background:#241a20}
 .filterfields .checkopt{width:auto;min-width:0;padding:4px 0;white-space:nowrap}
 body.dark .filterfields .field:has(.checks){grid-column:1/-1}
 body.dark .filterfields .checks{flex-direction:row;flex-wrap:wrap;gap:2px 20px}
+.checkopt input{width:auto !important;flex:0 0 auto}
+body.dark .checkopt input{width:auto !important}
