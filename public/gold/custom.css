@@ -32,4 +32,4 @@ aside.visible{display:block}
 .field select,.field input{width:100%;font-size:11px}
 .check{margin:20px 0 0}
 .help{margin:20px 0 0}
-@media(max-width:700px){.toolbar{flex-wrap:wrap}.toolbar input{flex-basis:100%}.toolbar select{flex:1}.filtertoggle{width:100%;justify-content:center}aside{padding:18px}.filterfields{grid-template-columns:1fr 1fr;gap:16px 14px}}
+@media(max-width:700px){.toolbar{flex-wrap:wrap}.toolbar input{flex-basis:100%}.toolbar select{flex:1}.filtertoggle{width:100%;justify-content:center}aside{padding:18px}.filterfields{grid-template-columns:1fr;gap:16px}.field{min-width:0}}
