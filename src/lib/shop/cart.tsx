@@ -1,3 +1,4 @@
+import type React from "react";
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import type { Product } from "./products";
 
@@ -14,7 +15,9 @@ type Ctx = {
   setOpen: (v: boolean) => void;
 };
 
-const CartCtx = createContext<Ctx | null>(null);
+// Keep one context instance across hot reloads so provider and consumers always match.
+const g = globalThis as unknown as { __virrCartCtx?: React.Context<Ctx | null> };
+const CartCtx = (g.__virrCartCtx ??= createContext<Ctx | null>(null));
 const KEY = "virr-gold-cart";
 
 export function CartProvider({ children }: { children: ReactNode }) {

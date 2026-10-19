@@ -28,7 +28,9 @@ export const Route = createFileRoute("/product/$id")({
 });
 
 function ProductPage() {
-  const { product: p, all } = Route.useLoaderData();
+  const data = Route.useLoaderData();
+  if (!data?.product) return null;
+  const { product: p, all } = data;
   const { add } = useCart();
   const [qty, setQty] = useState(1);
   const out = p.stock === 0;
