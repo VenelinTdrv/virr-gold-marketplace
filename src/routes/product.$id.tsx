@@ -42,7 +42,7 @@ function ProductPage() {
   const specs = [
     ["Тегло", `${p.weightG} g`],
     ["Чистота", p.fineness],
-    ["Производител", p.mint],
+    ["Рафинерия", p.mint],
     ["Държава", p.country],
     ...(p.year ? [["Година", String(p.year)]] : []),
     ["Цена на грам", fmt(pricePerGram(p))],
