@@ -65,3 +65,8 @@ aside .applybtn{width:100%;margin-top:22px}
   aside .applybtn:active{transform:translateY(2px)}
   body:has(aside.visible) #toast{bottom:98px}
 }
+
+/* мека сенка под плаващия бутон, за да не се срязва текстът под него */
+@media(max-width:700px){
+  aside.visible .applybtn::before{content:'';position:fixed;left:0;right:0;bottom:0;height:132px;background:linear-gradient(#100d1000,#100d10 66%);z-index:-1;pointer-events:none}
+}
