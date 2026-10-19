@@ -1,6 +1,6 @@
-import bar from "@/assets/bar.jpg";
-import coin from "@/assets/coin.jpg";
-import numis from "@/assets/numis.jpg";
+import bar from "@/assets/bar-luxury.jpg";
+import coin from "@/assets/coin-luxury.jpg";
+import numis from "@/assets/numis-luxury.jpg";
 
 export type Category = "bars" | "coins" | "numismatic" | "other";
 
