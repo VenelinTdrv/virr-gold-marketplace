@@ -28,9 +28,11 @@ export const Route = createFileRoute("/product/$id")({
 });
 
 function ProductPage() {
-  const { product: p, all } = Route.useLoaderData();
+  const data = Route.useLoaderData();
   const { add } = useCart();
   const [qty, setQty] = useState(1);
+  if (!data?.product) return null;
+  const { product: p, all } = data;
   const out = p.stock === 0;
   const related = all.filter((x) => x.category === p.category && x.id !== p.id).slice(0, 3);
   const specs = [

@@ -29,7 +29,7 @@ const SORTS = [
 ];
 
 function Shop() {
-  const PRODUCTS = Route.useLoaderData();
+  const PRODUCTS = Route.useLoaderData() ?? [];
   const MINTS = Array.from(new Set(PRODUCTS.map((x) => x.mint))).sort();
   const [q, setQ] = useState("");
   const [cats, setCats] = useState<Category[]>([]);
