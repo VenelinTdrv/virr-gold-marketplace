@@ -1,14 +1,15 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
-import { PRODUCTS, type Product } from "./products";
+import type { Product } from "./products";
 
-type Line = { id: string; qty: number };
+type Line = { id: string; qty: number; product: Product };
 type Ctx = {
-  lines: (Line & { product: Product })[];
+  lines: Line[];
   count: number;
   total: number;
-  add: (id: string, qty?: number) => void;
+  add: (product: Product, qty?: number) => void;
   setQty: (id: string, qty: number) => void;
   remove: (id: string) => void;
+  clear: () => void;
   open: boolean;
   setOpen: (v: boolean) => void;
 };
@@ -28,28 +29,29 @@ export function CartProvider({ children }: { children: ReactNode }) {
     setRaw(l);
     localStorage.setItem(KEY, JSON.stringify(l));
   };
-  const lines = raw
-    .map((l) => ({ ...l, product: PRODUCTS.find((p) => p.id === l.id)! }))
-    .filter((l) => l.product);
+  const lines = raw.filter((l) => l.product);
   const clamp = (id: string, q: number) => {
-    const s = PRODUCTS.find((p) => p.id === id)?.stock ?? 0;
+    const s = raw.find((l) => l.id === id)?.product.stock ?? 0;
     return Math.max(0, Math.min(s, q));
   };
   const value: Ctx = {
     lines,
     count: lines.reduce((a, l) => a + l.qty, 0),
     total: lines.reduce((a, l) => a + l.qty * l.product.price, 0),
-    add: (id, qty = 1) => {
+    add: (product, qty = 1) => {
+      const id = product.id;
       const ex = raw.find((l) => l.id === id);
+      const lim = (q: number) => Math.max(0, Math.min(product.stock, q));
       const next = ex
-        ? raw.map((l) => (l.id === id ? { ...l, qty: clamp(id, l.qty + qty) } : l))
-        : [...raw, { id, qty: clamp(id, qty) }];
+        ? raw.map((l) => (l.id === id ? { ...l, product, qty: lim(l.qty + qty) } : l))
+        : [...raw, { id, product, qty: lim(qty) }];
       save(next.filter((l) => l.qty > 0));
       setOpen(true);
     },
     setQty: (id, qty) =>
       save(raw.map((l) => (l.id === id ? { ...l, qty: clamp(id, qty) } : l)).filter((l) => l.qty > 0)),
     remove: (id) => save(raw.filter((l) => l.id !== id)),
+    clear: () => save([]),
     open,
     setOpen,
   };

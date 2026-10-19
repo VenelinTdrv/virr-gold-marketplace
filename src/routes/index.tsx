@@ -2,9 +2,10 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { Search, SlidersHorizontal, X } from "lucide-react";
 import hero from "@/assets/hero.jpg";
-import { CATEGORIES, MINTS, PRODUCTS, WEIGHT_RANGES, pricePerGram, type Category } from "@/lib/shop/products";
+import { CATEGORIES, WEIGHT_RANGES, pricePerGram, type Category } from "@/lib/shop/products";
 import { ProductCard } from "@/components/shop/ProductCard";
 import { TrustBar } from "@/components/shop/Layout";
+import { getCatalog } from "@/lib/shop/erp.functions";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -15,6 +16,7 @@ export const Route = createFileRoute("/")({
       { property: "og:description", content: "Златни кюлчета и монети с LBMA сертификат и застрахована доставка." },
     ],
   }),
+  loader: () => getCatalog(),
   component: Shop,
 });
 
@@ -27,6 +29,8 @@ const SORTS = [
 ];
 
 function Shop() {
+  const PRODUCTS = Route.useLoaderData();
+  const MINTS = Array.from(new Set(PRODUCTS.map((x) => x.mint))).sort();
   const [q, setQ] = useState("");
   const [cats, setCats] = useState<Category[]>([]);
   const [weights, setWeights] = useState<string[]>([]);
@@ -55,7 +59,7 @@ function Shop() {
     if (sort === "ppg") s.sort((a, b) => pricePerGram(a) - pricePerGram(b));
     if (sort === "weight") s.sort((a, b) => a.weightG - b.weightG);
     return s;
-  }, [q, cats, weights, mints, inStock, maxPrice, sort]);
+  }, [PRODUCTS, q, cats, weights, mints, inStock, maxPrice, sort]);
 
   const active = cats.length + weights.length + mints.length + (inStock ? 1 : 0) + (maxPrice < 120000 ? 1 : 0);
   const reset = () => { setCats([]); setWeights([]); setMints([]); setInStock(false); setMaxPrice(120000); };
