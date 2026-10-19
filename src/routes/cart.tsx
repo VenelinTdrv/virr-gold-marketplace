@@ -1,5 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
+import { submitOrder } from "@/lib/shop/erp.functions";
 import { useCart } from "@/lib/shop/cart";
 import { fmt } from "@/lib/shop/products";
 
@@ -17,12 +19,28 @@ export const Route = createFileRoute("/cart")({
 
 function CartPage() {
   const { lines, total } = useCart();
-  const [done, setDone] = useState(false);
+  const [done, setDone] = useState<string | null>(null);
+  const [err, setErr] = useState("");
+  const [busy, setBusy] = useState(false);
+  const send = useServerFn(submitOrder);
+  const { clear } = useCart();
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const f = new FormData(e.currentTarget);
+    const g = (k: string) => String(f.get(k) || "");
+    setBusy(true); setErr("");
+    try {
+      const r = await send({ data: { customer: { name: g("name"), phone: g("phone"), email: g("email"), address: g("address"), payment: g("pay") }, lines: lines.map((l) => ({ id: l.id, qty: l.qty })) } });
+      clear(); setDone(r.id);
+    } catch (x) { setErr(x instanceof Error ? x.message : "Грешка при поръчката"); }
+    setBusy(false);
+  };
   const shipping = total > 0 && total < 1000 ? 15 : 0;
   if (done)
     return (
       <div className="mx-auto max-w-xl px-4 py-24 text-center">
         <h1 className="font-display text-3xl font-bold">Благодарим за поръчката!</h1>
+        <p className="mt-3 font-semibold">Номер на поръчка: {done}</p>
         <p className="mt-3 text-muted-foreground">Ще се свържем с вас за потвърждение и плащане.</p>
         <Link to="/" className="mt-8 inline-block rounded-full bg-primary px-6 py-3 font-bold text-primary-foreground">Обратно към магазина</Link>
       </div>
@@ -37,24 +55,25 @@ function CartPage() {
   const field = "w-full rounded-xl border border-input bg-card px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-ring";
   return (
     <div className="mx-auto grid max-w-6xl gap-10 px-4 py-10 md:grid-cols-[minmax(0,1fr)_360px]">
-      <form onSubmit={(e) => { e.preventDefault(); setDone(true); }} className="space-y-4">
+      <form onSubmit={onSubmit} className="space-y-4">
         <h1 className="font-display text-3xl font-bold">Данни за доставка</h1>
         <div className="grid gap-4 sm:grid-cols-2">
-          <input required placeholder="Име и фамилия" className={field} />
-          <input required type="tel" placeholder="Телефон" className={field} />
+          <input required name="name" placeholder="Име и фамилия" className={field} />
+          <input required type="tel" name="phone" placeholder="Телефон" className={field} />
         </div>
-        <input required type="email" placeholder="Имейл" className={field} />
-        <input required placeholder="Адрес / офис на куриер" className={field} />
+        <input required type="email" name="email" placeholder="Имейл" className={field} />
+        <input required name="address" placeholder="Адрес / офис на куриер" className={field} />
         <p className="pt-4 font-bold">Начин на плащане</p>
         {["Банков превод", "Карта", "Плащане в офис"].map((m, i) => (
           <label key={m} className="flex items-center gap-3 rounded-xl border border-input bg-card px-4 py-3 text-sm">
-            <input type="radio" name="pay" defaultChecked={i === 0} className="accent-primary" /> {m}
+            <input type="radio" name="pay" value={m} defaultChecked={i === 0} className="accent-primary" /> {m}
           </label>
         ))}
         <label className="flex items-start gap-2 pt-2 text-sm">
           <input required type="checkbox" className="mt-1 accent-primary" /> Съгласен съм с общите условия и политиката за поверителност.
         </label>
-        <button className="w-full rounded-full bg-primary py-3.5 font-bold text-primary-foreground hover:opacity-90">Потвърди поръчката</button>
+        {err && <p className="text-sm font-semibold text-destructive">{err}</p>}
+        <button disabled={busy} className="w-full rounded-full bg-primary py-3.5 font-bold text-primary-foreground hover:opacity-90 disabled:opacity-60">{busy ? "Изпращане…" : "Потвърди поръчката"}</button>
       </form>
       <aside className="h-fit rounded-2xl bg-card p-6 shadow-card">
         <h2 className="font-bold">Обобщение</h2>
