@@ -40,5 +40,17 @@ body.dark .checkopt:hover{background:#241a20}
 .filterfields .checkopt{width:auto;min-width:0;padding:4px 0;white-space:nowrap}
 body.dark .filterfields .field:has(.checks){grid-column:1/-1}
 body.dark .filterfields .checks{flex-direction:row;flex-wrap:wrap;gap:2px 20px}
-.checkopt input{width:auto !important;flex:0 0 auto}
-body.dark .checkopt input{width:auto !important}
+/* ── Отметки: по-големи и лесни за избор (web и телефон) ── */
+.checks{gap:9px}
+.filterfields .checks{gap:9px 12px}
+body.dark .filterfields .checks{gap:9px 12px}
+.checkopt,.check,.comparecheck{display:flex;align-items:center;gap:11px;cursor:pointer;border:1px solid var(--line);border-radius:9px;background:#1e1520;padding:10px 12px;min-height:46px;font-size:13px;line-height:1.4;transition:border-color .15s,background .15s;-webkit-user-select:none;user-select:none}
+.checkopt:hover,.check:hover,.comparecheck:hover{border-color:var(--gold);background:#2a1a22}
+.checkopt:has(input:checked),.check:has(input:checked),.comparecheck:has(input:checked){border-color:var(--gold);background:#2c1c24}
+.checkopt span{flex:1}
+.checkopt small{font-size:11px}
+.checkopt input,.check input,.comparecheck input{width:21px !important;height:21px !important;min-width:0;flex:0 0 auto;margin:0;accent-color:var(--gold);cursor:pointer}
+body.dark .checkopt input,body.dark .check input,body.dark .comparecheck input{width:21px !important;height:21px !important;flex:0 0 auto;accent-color:var(--gold)}
+.filterfields .checkopt{padding:10px 12px;white-space:normal;min-width:0}
+.comparecheck{font-size:12px;min-height:44px}
+@media(max-width:700px){.checkopt,.check,.comparecheck{min-height:50px;font-size:14px;padding:12px 14px}.checkopt input,.check input,.comparecheck input{width:24px !important;height:24px !important}body.dark .checkopt input,body.dark .check input,body.dark .comparecheck input{width:24px !important;height:24px !important}.filterfields .checks{flex-direction:column;gap:9px}body.dark .filterfields .checks{flex-direction:column;gap:9px}.filterfields .checkopt{width:100%}}
