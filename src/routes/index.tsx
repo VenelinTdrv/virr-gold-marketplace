@@ -1,7 +1,8 @@
+import { Button } from "@/components/ui/button";
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { Search, SlidersHorizontal, X } from "lucide-react";
-import hero from "@/assets/hero.jpg";
+import hero from "@/assets/hero-luxury.jpg";
 import { CATEGORIES, WEIGHT_RANGES, pricePerGram, type Category } from "@/lib/shop/products";
 import { ProductCard } from "@/components/shop/ProductCard";
 import { TrustBar } from "@/components/shop/Layout";
@@ -10,6 +11,8 @@ import { getCatalog } from "@/lib/shop/erp.functions";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { title: "Инвестиционно злато | Virr Gold Shop" },
       { name: "description", content: "Купете златни кюлчета, инвестиционни и нумизматични монети с обратно изкупуване до 48 часа." },
       { property: "og:title", content: "Инвестиционно злато | Virr Gold Shop" },
@@ -85,7 +88,7 @@ function Shop() {
         ))}
       </Group>
       <Check label="Само в наличност" checked={inStock} onChange={() => setInStock(!inStock)} />
-      {active > 0 && <button onClick={reset} className="text-sm font-semibold text-primary hover:underline">Изчисти филтрите ({active})</button>}
+      {active > 0 && <Button variant="ghost" onClick={reset} className="text-sm font-semibold text-primary hover:underline">Изчисти филтрите ({active})</Button>}
     </div>
   );
 
@@ -93,19 +96,20 @@ function Shop() {
     <div>
       <section className="relative overflow-hidden">
         <img src={hero} alt="Златни кюлчета и монети" width={1600} height={800} className="absolute inset-0 h-full w-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-r from-primary-deep via-primary-deep/80 to-transparent" />
-        <div className="relative mx-auto max-w-7xl px-4 py-12 md:py-16">
-          <p className="text-xs font-bold uppercase tracking-[0.25em] text-gold">Virr Gold</p>
-          <h1 className="mt-3 max-w-xl font-display text-4xl font-bold leading-tight text-primary-foreground md:text-5xl">Инвестиционно злато, на което можете да разчитате.</h1>
-          <p className="mt-4 max-w-lg text-primary-foreground/85">Кюлчета, инвестиционни и колекционерски монети от водещи световни рафинерии. С гарантирано обратно изкупуване.</p>
-          <a href="#catalog" className="mt-8 inline-block rounded-full bg-primary px-7 py-3 font-bold text-primary-foreground hover:opacity-90">Разгледай продуктите</a>
+        <div className="absolute inset-0 bg-hero-shade" />
+        <div className="relative mx-auto max-w-7xl px-5 py-10 md:px-8 md:py-12">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.25em] text-gold">VIRR · GOLD COLLECTION</p>
+          <h1 className="mt-3 max-w-xl font-display text-4xl font-medium leading-tight text-hero-text md:text-5xl">Инвестиционно злато</h1>
+          <p className="mt-3 max-w-md text-sm leading-relaxed text-hero-text/80">Кюлчета, инвестиционни и колекционерски монети от водещи световни рафинерии. С гарантирано обратно изкупуване.</p>
+          <a href="#catalog" className="mt-8 inline-block rounded-sm bg-primary hover:bg-primary/90 hover:text-primary-foreground px-7 py-3 font-bold text-primary-foreground hover:opacity-90">Разгледай колекцията <span aria-hidden="true">↗</span></a>
         </div>
       </section>
 
-      <div className="mx-auto max-w-7xl px-4">
-        <div className="-mt-7 relative"><TrustBar /></div>
+      <div className="mx-auto max-w-7xl px-5 md:px-8">
+        <div className="border-b border-border py-5"><TrustBar /></div>
 
-        <div className="mt-10 flex flex-wrap gap-2">
+        <div className="mb-5 mt-8 flex items-baseline justify-between"><h2 className="font-display text-3xl font-medium">Колекцията</h2><span className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">VIRR GOLD</span></div>
+        <div className="flex flex-wrap gap-2 border-b border-border pb-5">
           <Chip active={!cats.length} onClick={() => setCats([])}>Всички</Chip>
           {CATEGORIES.map((c) => (
             <Chip key={c.id} active={cats.length === 1 && cats[0] === c.id} onClick={() => setCats([c.id])}>{c.label}</Chip>
@@ -113,30 +117,30 @@ function Shop() {
         </div>
 
         <div id="catalog" className="mt-8 grid gap-8 lg:grid-cols-[250px_minmax(0,1fr)]">
-          <aside className="hidden lg:block"><div className="sticky top-24 rounded-2xl bg-card p-5 shadow-card">{filters}</div></aside>
+          <aside className="hidden lg:block"><div className="sticky top-24 border-r border-border pr-6">{filters}</div></aside>
 
           <div>
             <div className="mb-6 grid grid-cols-[minmax(0,1fr)_auto] gap-3 sm:flex sm:items-center">
               <div className="relative min-w-0 sm:flex-1">
                 <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Търси продукт, монетен двор…" className="w-full rounded-full border border-input bg-card py-2.5 pl-10 pr-4 text-sm outline-none focus:ring-2 focus:ring-ring" />
+                <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Търси продукт, монетен двор…" className="w-full rounded-sm border border-input bg-card py-2.5 pl-10 pr-4 text-sm outline-none focus:ring-2 focus:ring-ring" />
               </div>
-              <button onClick={() => setMobileFilters(true)} className="inline-flex items-center gap-2 rounded-full border border-input bg-card px-4 py-2.5 text-sm font-semibold lg:hidden">
+              <Button variant="ghost" onClick={() => setMobileFilters(true)} className="inline-flex items-center gap-2 rounded-sm border border-input bg-card px-4 py-2.5 text-sm font-semibold lg:hidden">
                 <SlidersHorizontal className="h-4 w-4" /> Филтри{active ? ` (${active})` : ""}
-              </button>
-              <select value={sort} onChange={(e) => setSort(e.target.value)} className="col-span-2 rounded-full border border-input bg-card px-4 py-2.5 text-sm sm:col-span-1">
+              </Button>
+              <select value={sort} onChange={(e) => setSort(e.target.value)} className="col-span-2 rounded-sm border border-input bg-card px-4 py-2.5 text-sm sm:col-span-1">
                 {SORTS.map((s) => <option key={s.id} value={s.id}>{s.label}</option>)}
               </select>
             </div>
             <p className="mb-4 text-sm text-muted-foreground">{list.length} продукта</p>
             {list.length ? (
-              <div className="grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6">
+              <div className="grid grid-cols-1 gap-4 min-[420px]:grid-cols-2 md:grid-cols-3 md:gap-5">
                 {list.map((p) => <ProductCard key={p.id} p={p} />)}
               </div>
             ) : (
-              <div className="rounded-2xl bg-card p-10 text-center shadow-card">
+              <div className="rounded-md bg-card p-10 text-center shadow-card">
                 <p className="font-semibold">Няма продукти по тези критерии.</p>
-                <button onClick={reset} className="mt-3 text-sm font-semibold text-primary hover:underline">Изчисти филтрите</button>
+                <Button variant="ghost" onClick={reset} className="mt-3 text-sm font-semibold text-primary hover:underline">Изчисти филтрите</Button>
               </div>
             )}
           </div>
@@ -145,14 +149,14 @@ function Shop() {
 
       {mobileFilters && (
         <div className="fixed inset-0 z-50 lg:hidden">
-          <div className="absolute inset-0 bg-foreground/40" onClick={() => setMobileFilters(false)} />
-          <div className="absolute bottom-0 left-0 right-0 max-h-[85vh] overflow-y-auto rounded-t-3xl bg-card p-6">
+          <div className="absolute inset-0 bg-hero-ink/70" onClick={() => setMobileFilters(false)} />
+          <div className="absolute bottom-0 left-0 right-0 max-h-[85vh] overflow-y-auto rounded-t-md bg-card p-6">
             <div className="mb-4 flex items-center justify-between">
               <h2 className="font-display text-xl font-bold">Филтри</h2>
-              <button onClick={() => setMobileFilters(false)} aria-label="Затвори"><X className="h-5 w-5" /></button>
+              <Button variant="ghost" onClick={() => setMobileFilters(false)} aria-label="Затвори"><X className="h-5 w-5" /></Button>
             </div>
             {filters}
-            <button onClick={() => setMobileFilters(false)} className="mt-6 w-full rounded-full bg-primary py-3 font-bold text-primary-foreground">Покажи {list.length} продукта</button>
+            <Button variant="ghost" onClick={() => setMobileFilters(false)} className="mt-6 w-full rounded-sm bg-primary hover:bg-primary/90 hover:text-primary-foreground py-3 font-bold text-primary-foreground">Покажи {list.length} продукта</Button>
           </div>
         </div>
       )}
@@ -174,6 +178,6 @@ function Check({ label, checked, onChange, count }: { label: string; checked: bo
 }
 function Chip({ active, onClick, children }: { active: boolean; onClick: () => void; children: React.ReactNode }) {
   return (
-    <button onClick={onClick} className={`rounded-full px-4 py-2 text-sm font-semibold transition ${active ? "bg-primary text-primary-foreground" : "bg-card text-secondary-foreground shadow-card hover:bg-secondary"}`}>{children}</button>
+    <Button variant="ghost" onClick={onClick} className={`rounded-sm px-4 py-2 text-sm font-semibold transition ${active ? "border-primary bg-primary text-primary-foreground" : "border-border bg-transparent text-secondary-foreground hover:bg-secondary"}`}>{children}</Button>
   );
 }
