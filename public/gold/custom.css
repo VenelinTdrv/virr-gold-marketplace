@@ -55,3 +55,5 @@ body.dark .checkopt input,body.dark .check input,body.dark .comparecheck input{w
 .comparecheck{font-size:12px;min-height:44px}
 .check{width:max-content;max-width:100%}
 @media(max-width:700px){.checkopt,.check,.comparecheck{min-height:50px;font-size:14px;padding:12px 14px}.checkopt input,.check input,.comparecheck input{width:24px !important;height:24px !important}body.dark .checkopt input,body.dark .check input,body.dark .comparecheck input{width:24px !important;height:24px !important}.filterfields .checks{grid-template-columns:1fr;gap:9px}body.dark .filterfields .checks{grid-template-columns:1fr;gap:9px}.filterfields .checkopt{width:100%}.check{width:100%}}
+
+aside .applybtn{width:100%;margin-top:22px}
