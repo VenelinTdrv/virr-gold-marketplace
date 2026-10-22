@@ -7,15 +7,16 @@ const script = readFileSync("public/gold/app.js", "utf8");
 // jsdom ships <dialog> without its modal methods, while the shop opens the
 // comparison with showModal(). Give the test run the minimal behaviour.
 beforeAll(() => {
-  const proto = HTMLDialogElement.prototype as unknown as Record<string, unknown>;
-  if (!proto.showModal) {
-    proto.showModal = function (this: HTMLDialogElement) {
-      this.open = true;
-    };
-    proto.close = function (this: HTMLDialogElement) {
-      this.open = false;
-      this.dispatchEvent(new Event("close"));
-    };
+  if (!(HTMLDialogElement.prototype as Partial<HTMLDialogElement>).showModal) {
+    Object.assign(HTMLDialogElement.prototype, {
+      showModal(this: HTMLDialogElement) {
+        this.open = true;
+      },
+      close(this: HTMLDialogElement) {
+        this.open = false;
+        this.dispatchEvent(new Event("close"));
+      },
+    });
   }
 });
 
@@ -65,13 +66,16 @@ describe("Gold comparison selection", () => {
 
   it("adds a product to the cart straight from the comparison dialog", () => {
     const result = run(`
+      // In the browser app.js is a classic script, so its declarations are
+      // global and the inline onclick finds them; mirror that here.
+      window.addFromCompare = addFromCompare; window.notifyStock = notifyStock;
       toggleCompare(1); toggleCompare(2);
       openCompare();
       const buttons = [...document.querySelectorAll('.buyrow button')];
       const before = $('count').textContent;
       buttons[0].click();
       return {
-        buttons: buttons.length,
+        wired: buttons.map(b => b.getAttribute('onclick')),
         labels: buttons.map(b => b.textContent.trim()),
         before,
         after: $('count').textContent,
@@ -81,7 +85,7 @@ describe("Gold comparison selection", () => {
       };
     `);
     expect(result).toEqual({
-      buttons: 2,
+      wired: ["addFromCompare(1)", "addFromCompare(2)"],
       labels: ["＋ В количката", "＋ В количката"],
       before: "0",
       after: "1",
