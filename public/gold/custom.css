@@ -98,3 +98,6 @@ dialog{position:fixed;inset:0;margin:auto;width:min(850px,94vw);max-width:94vw;m
 .comparison-scroll .buyrow .primary{gap:8px;padding:11px 16px;font-size:11px;white-space:nowrap}
 .comparison-scroll .buyrow .incart{display:block;font-size:10px;color:inherit;opacity:.7;margin-top:8px;min-height:14px}
 @media(max-width:700px){.comparison-scroll .buyrow .primary{width:100%;padding:12px 10px;font-size:10px;gap:6px}}
+
+/* ── Сравнение: най-ниската цена за грам се маркира зелено ── */
+.comparison-scroll td.best{color:#9ce8b8;background:#143526;font-weight:800}
