@@ -13,3 +13,4 @@
 - Cart lines store a product snapshot in localStorage; stock is re-validated server-side on order submit.
 
 - Shop presentation uses shared semantic CSS tokens and the shared Button component; catalog asset imports are centralized in products.ts so demo imagery stays consistent across views.
+- The uploaded storefront's comparison uses its existing selection state and native dialog to avoid a separate, inconsistent product selection.

@@ -58,6 +58,20 @@ body.dark .checkopt input,body.dark .check input,body.dark .comparecheck input{w
 
 aside .applybtn{width:100%;margin-top:22px}
 
+/* Comparison stays reachable while choosing products. */
+#compare[hidden]{display:none}
+.resultline #compare{position:fixed;right:28px;bottom:28px;z-index:60;min-height:48px;padding:14px 24px;font-size:14px;font-weight:700;background:var(--green);color:var(--ink);border:1px solid var(--gold);border-radius:8px}
+.resultline #compare:hover{background:var(--wine)}
+.comparison-scroll{overflow-x:auto;max-width:100%}
+.comparison-scroll table{min-width:540px}
+.comparison-scroll th{min-width:140px;vertical-align:top}
+@media(max-width:700px){
+  .resultline #compare{left:14px;right:14px;bottom:calc(14px + env(safe-area-inset-bottom));width:auto}
+  body:has(aside.visible) #compare{display:none}
+  body:has(#compare:not([hidden])) #toast{bottom:90px}
+  body:has(#compare:not([hidden])){padding-bottom:80px}
+}
+
 /* ── Бутон „Търсене": плаващ в дъното на екрана на телефон ── */
 @media(max-width:700px){
   aside.visible{padding-bottom:96px}
