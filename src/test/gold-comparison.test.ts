@@ -114,4 +114,35 @@ describe("Gold comparison selection", () => {
     expect(result.bestText).toBe("125,23 €");
     expect(result.legend).toBe(true);
   });
+
+  it("clears every product from the cart", () => {
+    const result = run(`
+      add(1); add(2);
+      openCart();
+      const btn = [...document.querySelectorAll('#modalbody button')]
+        .find(b => b.textContent.trim() === 'Изчисти количката');
+      const wired = btn?.getAttribute('onclick');
+      const before = Object.keys(cart).length;
+      // inline onclick handlers resolve in another realm under jsdom, so run
+      // the very call the button is wired to and check its effect.
+      clearCart();
+      return {
+        wired,
+        before,
+        after: Object.keys(cart).length,
+        count: $('count').textContent,
+        stored: JSON.parse(localStorage.getItem('virr-cart') || '{}'),
+        emptyState: document.querySelector('#modalbody .empty h3')?.textContent.trim()
+      };
+    `);
+    expect(result).toEqual({
+      wired: "clearCart()",
+      before: 2,
+      after: 0,
+      count: "0",
+      stored: {},
+      emptyState: "Количката ви е празна"
+    });
+  });
 });
+
