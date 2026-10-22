@@ -1,8 +1,23 @@
 import { readFileSync } from "node:fs";
-import { beforeEach, describe, expect, it } from "vitest";
+import { beforeAll, beforeEach, describe, expect, it } from "vitest";
 import { goldMarkup } from "@/lib/shop/goldMarkup";
 
 const script = readFileSync("public/gold/app.js", "utf8");
+
+// jsdom ships <dialog> without its modal methods, while the shop opens the
+// comparison with showModal(). Give the test run the minimal behaviour.
+beforeAll(() => {
+  const proto = HTMLDialogElement.prototype as unknown as Record<string, unknown>;
+  if (!proto.showModal) {
+    proto.showModal = function (this: HTMLDialogElement) {
+      this.open = true;
+    };
+    proto.close = function (this: HTMLDialogElement) {
+      this.open = false;
+      this.dispatchEvent(new Event("close"));
+    };
+  }
+});
 
 function run(actions: string) {
   return new Function(`${script}\n${actions}`)();
