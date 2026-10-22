@@ -95,4 +95,23 @@ describe("Gold comparison selection", () => {
       stillOpen: true,
     });
   });
+
+  it("marks the lowest price per gram in green inside the comparison", () => {
+    const result = run(`
+      toggleCompare(1); toggleCompare(2); toggleCompare(3);
+      openCompare();
+      const row = [...document.querySelectorAll('.comparison-scroll tr')]
+        .find(r => r.querySelector('td')?.textContent.trim() === 'Цена / грам');
+      const cells = [...row.querySelectorAll('td')].slice(1);
+      return {
+        marked: cells.map(td => td.className),
+        bestText: cells.find(td => td.className === 'best')?.textContent.trim(),
+        legend: document.querySelector('#modalbody .notice').textContent.includes('най-ниската цена за грам')
+      };
+    `);
+    // PAMP 10 g = 132,00 €/г · Филхармония 31,1035 g = 125,23 €/г · Valcambi 20 g = 126,00 €/г
+    expect(result.marked).toEqual(["", "best", ""]);
+    expect(result.bestText).toBe("125,23 €");
+    expect(result.legend).toBe(true);
+  });
 });
