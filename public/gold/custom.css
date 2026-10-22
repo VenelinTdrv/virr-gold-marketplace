@@ -101,3 +101,9 @@ dialog{position:fixed;inset:0;margin:auto;width:min(850px,94vw);max-width:94vw;m
 
 /* ── Сравнение: най-ниската цена за грам се маркира зелено ── */
 .comparison-scroll td.best{color:#9ce8b8;background:#143526;font-weight:800}
+
+/* ── Действия в количката ── */
+.cartactions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.cartactions button{flex:1 1 auto}
+.cartactions .primary{flex:2 1 240px}
+@media(max-width:700px){.cartactions{flex-direction:column}.cartactions button{width:100%}}
