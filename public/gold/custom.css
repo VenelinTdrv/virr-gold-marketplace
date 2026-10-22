@@ -66,6 +66,7 @@ aside .applybtn{width:100%;margin-top:22px}
 #compare:hover{background:var(--wine)}
 #clearcompare{background:#1d1119;color:#e8ccd9;border:1px solid #865269}
 #clearcompare:hover{background:#2a1826;border-color:var(--gold);color:var(--gold)}
+body:has(#compare:not([hidden])){padding-bottom:120px}
 .comparison-scroll{overflow-x:auto;max-width:100%}
 .comparison-scroll table{min-width:540px}
 .comparison-scroll th{min-width:140px;vertical-align:top}
