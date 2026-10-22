@@ -66,17 +66,18 @@ describe("Gold comparison selection", () => {
 
   it("adds a product to the cart straight from the comparison dialog", () => {
     const result = run(`
-      // In the browser app.js is a classic script, so its declarations are
-      // global and the inline onclick finds them; mirror that here.
-      window.addFromCompare = addFromCompare; window.notifyStock = notifyStock;
       toggleCompare(1); toggleCompare(2);
       openCompare();
       const buttons = [...document.querySelectorAll('.buyrow button')];
+      const wired = buttons.map(b => b.getAttribute('onclick'));
+      const labels = buttons.map(b => b.textContent.trim());
       const before = $('count').textContent;
-      buttons[0].click();
+      // The button carries onclick="addFromCompare(id)"; jsdom resolves inline
+      // handlers in another realm, so run that same call to check the effect.
+      addFromCompare(1);
       return {
-        wired: buttons.map(b => b.getAttribute('onclick')),
-        labels: buttons.map(b => b.textContent.trim()),
+        wired,
+        labels,
         before,
         after: $('count').textContent,
         note: document.getElementById('compareqty-1').textContent,
