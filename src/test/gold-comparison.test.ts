@@ -47,4 +47,32 @@ describe("Gold comparison selection", () => {
     `);
     expect(result).toEqual([true, true, true, true, false, false, true, true, 0, 0]);
   });
+
+  it("adds a product to the cart straight from the comparison dialog", () => {
+    const result = run(`
+      toggleCompare(1); toggleCompare(2);
+      openCompare();
+      const buttons = [...document.querySelectorAll('.buyrow button')];
+      const before = $('count').textContent;
+      buttons[0].click();
+      return {
+        buttons: buttons.length,
+        labels: buttons.map(b => b.textContent.trim()),
+        before,
+        after: $('count').textContent,
+        note: document.getElementById('compareqty-1').textContent,
+        inCart: cart[1],
+        stillOpen: $('modalbody').querySelector('#comparison-title') !== null
+      };
+    `);
+    expect(result).toEqual({
+      buttons: 2,
+      labels: ["＋ В количката", "＋ В количката"],
+      before: "0",
+      after: "1",
+      note: "В количката: 1 бр.",
+      inCart: 1,
+      stillOpen: true,
+    });
+  });
 });
