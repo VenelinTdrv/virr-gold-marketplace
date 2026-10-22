@@ -80,3 +80,9 @@ aside .applybtn{width:100%;margin-top:22px}
   body:has(aside.visible) #toast{bottom:98px}
 }
 
+
+/* ── Прозорецът се отваря в центъра на екрана ──
+   The base reset zeroes every margin, which removes the browser's own
+   centering of a modal dialog; restore it explicitly on both axes. */
+dialog{position:fixed;inset:0;margin:auto;width:min(850px,94vw);max-width:94vw;max-height:90vh;max-height:90dvh;height:fit-content;overflow:auto}
+@media(max-width:700px){dialog{max-height:88vh;max-height:88dvh}}
