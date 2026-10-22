@@ -92,3 +92,9 @@ body:has(#compare:not([hidden])){padding-bottom:120px}
    centering of a modal dialog; restore it explicitly on both axes. */
 dialog{position:fixed;inset:0;margin:auto;width:min(850px,94vw);max-width:94vw;max-height:90vh;max-height:90dvh;height:fit-content;overflow:auto}
 @media(max-width:700px){dialog{max-height:88vh;max-height:88dvh}}
+
+/* ── Добавяне в количката прав от таблицата за сравнение ── */
+.comparison-scroll .buyrow td{padding-top:18px;vertical-align:top}
+.comparison-scroll .buyrow .primary{gap:8px;padding:11px 16px;font-size:11px;white-space:nowrap}
+.comparison-scroll .buyrow .incart{display:block;font-size:10px;color:inherit;opacity:.7;margin-top:8px;min-height:14px}
+@media(max-width:700px){.comparison-scroll .buyrow .primary{width:100%;padding:12px 10px;font-size:10px;gap:6px}}
