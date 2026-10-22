@@ -33,4 +33,18 @@ describe("Gold comparison selection", () => {
     `);
     expect(result).toEqual([1, 2, 3]);
   });
+
+  it("offers a clear button with the selection and empties it on demand", () => {
+    const result = run(`
+      const dock = $('comparedock'), clear = $('clearcompare');
+      const states = [dock.hidden, clear.hidden];
+      toggleCompare(1); states.push(dock.hidden, clear.hidden);
+      toggleCompare(2); states.push(dock.hidden, clear.hidden);
+      clearCompare();
+      states.push(dock.hidden, clear.hidden, compareIds.length,
+        document.querySelectorAll('.comparecheck input:checked').length);
+      return states;
+    `);
+    expect(result).toEqual([true, true, true, true, false, false, true, true, 0, 0]);
+  });
 });
