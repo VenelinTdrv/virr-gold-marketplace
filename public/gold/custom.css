@@ -107,3 +107,9 @@ dialog{position:fixed;inset:0;margin:auto;width:min(850px,94vw);max-width:94vw;m
 .cartactions button{flex:1 1 auto}
 .cartactions .primary{flex:2 1 240px}
 @media(max-width:700px){.cartactions{flex-direction:column;align-items:stretch}.cartactions button{width:100%;flex:0 0 auto}.cartactions .primary{flex:0 0 auto}}
+
+/* Sell / buy price labels */
+.pricelabel{display:block;font-size:8px;letter-spacing:1.1px;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:2px}
+.price{margin-top:6px}
+.buyprice{font-size:13px;font-weight:700;color:var(--gold);margin:6px 0 2px}
+@media(max-width:700px){.buyprice{font-size:12px}}
