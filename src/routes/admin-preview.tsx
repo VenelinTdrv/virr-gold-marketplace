@@ -15,7 +15,7 @@ export const Route = createFileRoute('/admin-preview')({
   },
   head: () => ({ meta: [
     { title: 'Admin panel preview | Virr Gold' },
-    { name: 'description', content: 'Примерен административен панел на Virr Gold по HyperERP: артикули, операции, справки и администрация.' },
+    { name: 'description', content: 'CMS преглед на Virr Gold: артикули, страници, банери, медия, менюта, SEO и настройки на магазина.' },
     { property: 'og:title', content: 'Admin panel preview | Virr Gold' },
     { property: 'og:description', content: 'Административен преглед с примерни данни, без реални промени в HyperERP.' },
     { property: 'og:type', content: 'website' }, { name: 'twitter:card', content: 'summary' }, { name: 'robots', content: 'noindex, nofollow' },

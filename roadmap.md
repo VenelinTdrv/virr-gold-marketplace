@@ -24,3 +24,7 @@
 
 # Consistent light admin design
 - [x] Isolate all admin controls from storefront colors and verify entry from the shop on desktop and mobile.
+
+# CMS preview menus
+- [x] Add pages, homepage/banners, media, menus, SEO and shop settings under nomenclatures with read-only sample records.
+- [x] Verify all six screens, search, details and refresh persistence.

@@ -1,4 +1,4 @@
-import { ClipboardList, ShoppingBag, RotateCcw, Truck, ArrowLeftRight, Wallet, Package, Boxes, LayoutGrid, Users, Globe, MapPin, Warehouse, Landmark, UserRoundPen, Layers, PackageSearch, CircleDollarSign, PackageX, UserCog, SlidersHorizontal } from 'lucide-react';
+import { ClipboardList, ShoppingBag, RotateCcw, Truck, ArrowLeftRight, Wallet, Package, Boxes, LayoutGrid, Users, Globe, MapPin, Warehouse, Landmark, UserRoundPen, Layers, PackageSearch, CircleDollarSign, PackageX, UserCog, SlidersHorizontal, FileText, Images, Image, ListTree, Search } from 'lucide-react';
 
 const allAdminGroups = [
   { title: 'Операции', items: [
@@ -13,6 +13,12 @@ const allAdminGroups = [
     { id: 'products', title: 'Артикули', icon: Package },
     { id: 'bundles', title: 'Комбота', icon: Boxes },
     { id: 'categories', title: 'Категории', icon: LayoutGrid },
+    { id: 'pages', title: 'Страници', icon: FileText },
+    { id: 'homepage', title: 'Банери и начална страница', icon: Image },
+    { id: 'media', title: 'Медия', icon: Images },
+    { id: 'menus', title: 'Менюта', icon: ListTree },
+    { id: 'seo', title: 'SEO', icon: Search },
+    { id: 'shop-settings', title: 'Настройки на магазина', icon: SlidersHorizontal },
     { id: 'customers', title: 'Клиенти', icon: Users },
     { id: 'suppliers', title: 'Доставчици', icon: Truck },
     { id: 'countries', title: 'Държави', icon: Globe },
@@ -42,6 +48,12 @@ export function isAdminSection(value: unknown): value is AdminSection { return t
 export type PreviewTable = { columns: string[]; rows: string[][] };
 // These records are fictional; they are never read from HyperERP or customer profiles.
 export const adminTables: Partial<Record<AdminSection, PreviewTable>> = {
+  pages: { columns: ['Код', 'Страница', 'Адрес', 'Статус'], rows: [['DEMO-P01','За нас','/about','Чернова'],['DEMO-P02','Контакти','/contacts','Чернова'],['DEMO-P03','Доставка','/delivery','Чернова'],['DEMO-P04','Общи условия','/terms','Чернова'],['DEMO-P05','Поверителност','/privacy','Чернова']] },
+  homepage: { columns: ['Код', 'Елемент', 'Позиция', 'Съдържание', 'Статус'], rows: [['DEMO-H01','Основен банер','Начална страница','Стойност, която държите в ръцете си.','Примерен'],['DEMO-H02','Акцентирани продукти','Под основния банер','Златни кюлчета PAMP и Valcambi','Примерен']] },
+  media: { columns: ['Код', 'Име', 'Вид', 'Употреба'], rows: [['DEMO-M01','Основна снимка на магазина','Изображение','Начална страница'],['DEMO-M02','Златни кюлчета PAMP','Изображения','Артикули'],['DEMO-M03','Златни кюлчета Valcambi','Изображения','Артикули']] },
+  menus: { columns: ['Код', 'Меню', 'Позиция', 'Връзки'], rows: [['DEMO-N01','Основно меню','Горна част','Каталог · Контакти'],['DEMO-N02','Информация','Долна част','За нас · Доставка · Общи условия · Поверителност']] },
+  seo: { columns: ['Код', 'Страница', 'SEO заглавие', 'Описание', 'Адрес'], rows: [['DEMO-SEO01','Начална страница','Virr Gold — инвестиционно злато','Златни кюлчета и инвестиционни монети.','/'],['DEMO-SEO02','Златни кюлчета','Златни кюлчета PAMP и Valcambi | Virr Gold','Инвестиционни златни кюлчета с различен грамаж.','/gold-bars']] },
+  'shop-settings': { columns: ['Код', 'Настройка', 'Стойност'], rows: [['DEMO-C01','Име на магазина','Virr Gold'],['DEMO-C02','Валута','EUR'],['DEMO-C03','Език','Български'],['DEMO-C04','Телефон за контакт','Не е зададен'],['DEMO-C05','Имейл за контакт','Не е зададен'],['DEMO-C06','Фирмени данни','Не са зададени'],['DEMO-C07','Социални мрежи','Не са зададени']] },
   returns: { columns: ['Номер', 'Клиент', 'Артикул', 'Количество', 'Статус'], rows: [['DEMO-R01','Демо клиент 01','Златно кюлче 5 g','1','В преглед']] },
   deliveries: { columns: ['Номер', 'Доставчик', 'Склад', 'Дата', 'Статус'], rows: [['DEMO-D01','Демо доставчик PAMP','Основен склад (демо)','08.11.2026','Получена'],['DEMO-D02','Демо доставчик Valcambi','Основен склад (демо)','09.11.2026','Очаквана']] },
   transfers: { columns: ['Номер', 'От склад', 'Към склад', 'Артикул', 'Количество', 'Статус'], rows: [['DEMO-T01','Основен склад (демо)','Офис София (демо)','Златно кюлче 10 g','5','Завършен']] },
