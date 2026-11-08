@@ -25,9 +25,9 @@ export const Route = createFileRoute("/")({
   component: GoldShop,
 });
 
-const UploadedStorefront = memo(({ product }: { product?: StorefrontProduct }) => <div dangerouslySetInnerHTML={{ __html: product ? goldMarkup.replace('<main>', `<main class="gold-product-page"><div class="breadcrumb"><a href="/">Инвестиционно злато</a><span>/</span>${product.name}</div><div id="productpage"></div><a class="textlink" href="/">← Към каталога</a></main><main hidden>`).replaceAll('href="#catalog"', 'href="/#catalog"').replaceAll('href="#guide"', 'href="/#guide"') : goldMarkup }} />);
+const UploadedStorefront = memo(({ product }: { product?: StorefrontProduct | undefined }) => <div dangerouslySetInnerHTML={{ __html: product ? goldMarkup.replace('<main>', `<main class="gold-product-page"><div class="breadcrumb"><a href="/">Инвестиционно злато</a><span>/</span>${product.name}</div><div id="productpage"></div><a class="textlink" href="/">← Към каталога</a></main><main hidden>`).replaceAll('href="#catalog"', 'href="/#catalog"').replaceAll('href="#guide"', 'href="/#guide"') : goldMarkup }} />);
 
-export function GoldShop({ product }: { product?: StorefrontProduct }) {
+export function GoldShop({ product }: { product?: StorefrontProduct | undefined }) {
   const navigate = useNavigate();
   const [accountHost, setAccountHost] = useState<HTMLElement | null>(null);
   const [adminHost, setAdminHost] = useState<HTMLElement | null>(null);
@@ -46,7 +46,7 @@ export function GoldShop({ product }: { product?: StorefrontProduct }) {
       actions.prepend(host);
       setAccountHost(host);
     }
-    const w = window as unknown as { __goldLoaded?: boolean; goldValidateBuyer?: typeof validateBuyer; goldProducts?: StorefrontProduct[]; goldProductId?: number; goldNavigateProduct?: (id: string) => void };
+    const w = window as unknown as { __goldLoaded?: boolean; goldValidateBuyer?: typeof validateBuyer; goldProducts?: StorefrontProduct[]; goldProductId?: number | undefined; goldNavigateProduct?: (id: string) => void };
     w.goldValidateBuyer = validateBuyer;
     w.goldProducts = storefrontProducts;
     w.goldProductId = product?.id;
@@ -54,7 +54,7 @@ export function GoldShop({ product }: { product?: StorefrontProduct }) {
     const onProductClick = (event: MouseEvent) => {
       if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey || event.button !== 0) return;
       const link = event.target instanceof Element ? event.target.closest<HTMLAnchorElement>('a[data-product-id]') : null;
-      const id = link?.dataset.productId;
+      const id = link?.dataset['productId'];
       if (!id) return;
       event.preventDefault();
       w.goldNavigateProduct?.(id);
