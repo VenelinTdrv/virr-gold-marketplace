@@ -135,3 +135,21 @@ dialog{position:fixed;inset:0;margin:auto;width:min(850px,94vw);max-width:94vw;m
 .buyer-review td{overflow-wrap:anywhere}
 @media(max-width:700px){.buyeroptions{grid-template-columns:1fr}.formgrid label{min-width:0}#checkoutform .primary{width:100%}}
 @media(max-width:700px){main .grid{grid-template-columns:minmax(0,1fr);gap:16px}main .grid .visual{height:240px}main .grid .visual svg{height:190px;width:210px}main .grid .card h3{font-size:14px;min-height:0}main .grid .meta{font-size:9px}main .grid .price{font-size:22px}main .grid .cardbottom .primary{font-size:12px;padding:12px}}
+
+.buybackbtn{width:100%;margin-top:12px;padding:14px 18px;border:1px solid var(--gold,#c9a45c);background:transparent;color:inherit;border-radius:999px;font:inherit;cursor:pointer}
+.buybackbtn:hover{background:rgba(201,164,92,.12)}
+#modal:has(.buyback){max-width:min(1100px,96vw);width:1100px}
+.buyback{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+.buyback form{display:flex;flex-direction:column;gap:12px}
+.buyback label{display:flex;flex-direction:column;gap:4px;font-size:13px;opacity:.95}
+.buyback label.check{flex-direction:row;align-items:flex-start;gap:8px}
+.buyback input:not([type=checkbox]),.buyback select{padding:10px;font:inherit;border-radius:6px;border:1px solid rgba(201,164,92,.4);background:transparent;color:inherit}
+.buyback select option{color:#222}
+.buyback aside{font-size:14px;line-height:1.6}
+.buyback ol{padding-left:20px}
+.buybacksum{margin-top:16px;padding:16px;border:1px solid rgba(201,164,92,.3);border-radius:8px;display:grid;gap:10px}
+.buybacksum>div{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.buybackitem .visual{width:70px;flex:none}
+.buyback small{text-align:center;opacity:.8}
+.formerror{color:#e88;min-height:1em;margin:0}
+@media(max-width:760px){.buyback{grid-template-columns:1fr}.buyback aside{order:-1}}
