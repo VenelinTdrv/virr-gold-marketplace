@@ -358,3 +358,8 @@
  .erp-detail dl { grid-template-columns:1fr 1fr; } .erp-selection { flex-wrap:wrap; }
  .erp-preview .erp-footer { flex-direction:column; gap:8px; }
 }
+
+.view-switch { display:inline-flex; align-items:center; gap:4px; padding:4px; border:1px solid var(--border); border-radius:6px; background:var(--card); flex-shrink:0; }
+.view-switch button { height:34px; min-width:80px; padding:0 12px; font-size:12px; }
+.store-view-switch { display:flex; justify-content:flex-end; padding:8px 5%; background:var(--background); border-bottom:1px solid var(--border); }
+@media(max-width:650px) { .erp-header-actions { gap:8px; } .erp-header-actions > span { display:none; } .view-switch button { min-width:66px; padding:0 8px; } }
