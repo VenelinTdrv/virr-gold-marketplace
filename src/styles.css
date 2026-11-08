@@ -275,8 +275,8 @@
 .erp-preview * { box-sizing:border-box; letter-spacing:0; }
 .erp-preview input, .erp-preview select { color-scheme:light; }
 .erp-preview button { font-family:inherit; box-shadow:none; }
-.erp-preview [data-slot="button"] { background:var(--card); color:var(--foreground); border-color:var(--border); }
-.erp-preview [data-slot="button"]:hover { background:var(--secondary); color:var(--primary); border-color:var(--ring); }
+.erp-preview button { background:var(--card); color:var(--foreground); border-color:var(--border); }
+.erp-preview button:hover { background:var(--secondary); color:var(--primary); border-color:var(--ring); }
 .erp-preview .view-switch [aria-pressed="true"], .erp-preview .view-switch [aria-pressed="true"]:hover { background:var(--secondary); color:var(--primary); border-color:var(--border); }
 .erp-preview .erp-nav-item.is-active, .erp-preview .erp-categories .is-active { background:var(--secondary); color:var(--primary); }
 .erp-preview input::placeholder { color:var(--muted-foreground); }
