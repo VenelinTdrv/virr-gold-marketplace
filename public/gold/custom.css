@@ -136,7 +136,7 @@ dialog{position:fixed;inset:0;margin:auto;width:min(850px,94vw);max-width:94vw;m
 @media(max-width:700px){.buyeroptions{grid-template-columns:1fr}.formgrid label{min-width:0}#checkoutform .primary{width:100%}}
 @media(max-width:700px){main .grid{grid-template-columns:minmax(0,1fr);gap:16px}main .grid .visual{height:240px}main .grid .visual svg{height:190px;width:210px}main .grid .card h3{font-size:14px;min-height:0}main .grid .meta{font-size:9px}main .grid .price{font-size:22px}main .grid .cardbottom .primary{font-size:12px;padding:12px}}
 
-.productdetail .primary,.buybackbtn{width:100%;padding:14px 18px;font-size:12px;gap:8px}
+.productdetail .primary,.buybackbtn{width:100%;height:49px;padding:14px 18px;font-size:12px;gap:8px}
 .productdetail .primary{margin-top:12px}
 .buybackbtn{width:100%;margin-top:12px;padding:14px 18px;border:1px solid var(--gold,#c9a45c);background:transparent;color:inherit;border-radius:999px;font:inherit;cursor:pointer}
 .buybackbtn:hover{background:rgba(201,164,92,.12)}
