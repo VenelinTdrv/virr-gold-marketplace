@@ -22,12 +22,17 @@ describe('Isolated demonstration CRUD', () => {
     expect(row).toBeDefined();
     expect(validateRecord(fieldsFor('products',data), row?.values ?? [], data.products ?? [])).toBe('Вече съществува запис с този код.');
   });
-  it('rejects invalid amounts and nonpositive weight', () => {
+  it('rejects nonpositive weight', () => {
     const data = initialDemoData(); const values = [...(data.products?.[0]?.values ?? [])];
-    values[0] = 'NEW'; values[4] = '-1';
-    expect(validateRecord(fieldsFor('products',data), values, [])).toContain('Цена продава');
-    values[4] = ''; values[7] = '0';
+    values[0] = 'NEW'; values[7] = '0';
     expect(validateRecord(fieldsFor('products',data), values, [])).toContain('Грамаж');
+  });
+  it.each([3,4,5])('preserves ERP-owned product field %i on edit and leaves it unknown on creation', index => {
+    const data = initialDemoData(); const row = data.products?.[0];
+    if (!row) throw new Error('Missing fixture');
+    const values = [...row.values]; values[index] = 'manually changed';
+    expect(saveDemoRecord(data,'products',values,row.key).products?.[0]?.values[index]).toBe(row.values[index]);
+    expect(saveDemoRecord(data,'products',values,'new-key').products?.find(r => r.key === 'new-key')?.values[index]).toBe('');
   });
   it('rejects corrupt browser storage', () => {
     expect(restoreDemoData('{bad')).toBeNull();
