@@ -5,14 +5,14 @@ import { CATEGORIES, fmt } from './products';
 
 export type DemoRecord = { key: string; values: string[] };
 export type DemoData = Partial<Record<AdminSection, DemoRecord[]>>;
-export type DemoField = { label: string; type?: 'number' | 'textarea' | 'select'; optional?: boolean; options?: string[]; min?: number; erpOwned?: boolean; descriptionSection?: boolean; visibleWhen?: { index: number; value: string } };
+export type DemoField = { label: string; type?: 'number' | 'textarea' | 'select'; optional?: boolean; options?: string[]; min?: number; erpOwned?: boolean; descriptionSection?: boolean; choiceAbove?: boolean; visibleWhen?: { index: number; value: string } };
 export const DEMO_STORAGE_KEY = 'virr-admin-demo-v1';
 export function isDemoFieldVisible(field: DemoField, values: string[]): boolean {
   return !field.visibleWhen || values[field.visibleWhen.index] === field.visibleWhen.value;
 }
 export function fieldsFor(section: AdminSection, data: DemoData): DemoField[] {
   if (section === 'customers') return [
-    { label: 'Код' }, { label: 'Име' }, { label: 'Вид', type: 'select', options: ['Физическо лице', 'Юридическо лице'] },
+    { label: 'Код' }, { label: 'Име' }, { label: 'Вид', type: 'select', choiceAbove: true, options: ['Физическо лице', 'Юридическо лице'] },
     { label: 'Поръчки', type: 'number', min: 0, optional: true }, { label: 'Обща стойност', optional: true },
     { label: 'Телефон', optional: true }, { label: 'Имейл', optional: true }, { label: 'Адрес', type: 'textarea', optional: true },
     { label: 'Име на фирма', visibleWhen: { index: 2, value: 'Юридическо лице' } },
