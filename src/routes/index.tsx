@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { goldMarkup } from "@/lib/shop/goldMarkup";
+import { validateBuyer } from "@/lib/shop/buyer";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -19,7 +20,8 @@ export const Route = createFileRoute("/")({
 
 function GoldShop() {
   useEffect(() => {
-    const w = window as unknown as { __goldLoaded?: boolean };
+    const w = window as unknown as { __goldLoaded?: boolean; goldValidateBuyer?: typeof validateBuyer };
+    w.goldValidateBuyer = validateBuyer;
     // The uploaded shop script declares globals, so it can only run once per page load.
     if (w.__goldLoaded) {
       window.location.reload();
