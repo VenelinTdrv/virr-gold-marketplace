@@ -134,3 +134,4 @@ dialog{position:fixed;inset:0;margin:auto;width:min(850px,94vw);max-width:94vw;m
 .buyererror{color:var(--stock-unavailable);font-size:12px;margin:12px 0}
 .buyer-review td{overflow-wrap:anywhere}
 @media(max-width:700px){.buyeroptions{grid-template-columns:1fr}.formgrid label{min-width:0}#checkoutform .primary{width:100%}}
+@media(max-width:700px){main .grid{grid-template-columns:minmax(0,1fr);gap:16px}main .grid .visual{height:240px}main .grid .visual svg{height:190px;width:210px}main .grid .card h3{font-size:14px;min-height:0}main .grid .meta{font-size:9px}main .grid .price{font-size:22px}main .grid .cardbottom .primary{font-size:12px;padding:12px}}
