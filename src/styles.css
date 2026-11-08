@@ -353,7 +353,7 @@
 .erp-row-actions { display:flex; gap:2px; }
 .erp-preview .erp-danger { color:var(--destructive); }
 .erp-notice { color:var(--primary); margin-bottom:16px; }
-.erp-dialog { background:var(--card); color:var(--foreground); border:1px solid var(--border); border-radius:8px; width:min(680px,calc(100% - 28px)); max-height:calc(100svh - 28px); padding:24px; margin:auto; overflow:auto; }
+.erp-dialog { background:var(--card); color:var(--foreground); border:1px solid var(--border); border-radius:8px; width:min(800px,calc(100% - 28px)); max-height:calc(100svh - 28px); padding:24px; margin:auto; overflow:auto; }
 .erp-dialog::backdrop { background:var(--auth-overlay); }
 .erp-dialog-heading { display:flex; gap:12px; align-items:center; justify-content:space-between; margin-bottom:20px; }
 .erp-dialog-heading h2 { font-size:20px; font-weight:700; margin:0; }
