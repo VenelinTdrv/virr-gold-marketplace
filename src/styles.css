@@ -358,6 +358,11 @@
 .erp-dialog-heading { display:flex; gap:12px; align-items:center; justify-content:space-between; margin-bottom:20px; }
 .erp-dialog-heading h2 { font-size:20px; font-weight:700; margin:0; }
 .erp-dialog-actions { display:flex; justify-content:flex-end; gap:10px; margin-top:24px; }
+.erp-client-type { border:0; padding:0; margin:0 0 24px; min-width:0; }
+.erp-client-type legend { font-size:12px; font-weight:600; margin-bottom:10px; }
+.erp-client-type > div { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+.erp-preview .erp-client-type button { justify-content:flex-start; min-height:48px; height:auto; white-space:normal; font-size:12px; }
+.erp-preview .erp-client-type button[aria-checked="true"] { background:var(--accent); color:var(--primary); border-color:var(--primary); }
 .erp-form-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
 .erp-form-grid label { display:block; font-size:12px; min-width:0; }
 .erp-form-grid input,.erp-form-grid select,.erp-form-grid textarea { display:block; margin-top:7px; width:100%; min-width:0; background:var(--card); color:var(--foreground); border:1px solid var(--border); border-radius:4px; padding:10px; font:inherit; }
