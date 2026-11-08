@@ -5,13 +5,13 @@ import { CATEGORIES, fmt } from './products';
 
 export type DemoRecord = { key: string; values: string[] };
 export type DemoData = Partial<Record<AdminSection, DemoRecord[]>>;
-export type DemoField = { label: string; type?: 'number' | 'textarea' | 'select'; optional?: boolean; options?: string[]; min?: number };
+export type DemoField = { label: string; type?: 'number' | 'textarea' | 'select'; optional?: boolean; options?: string[]; min?: number; erpOwned?: boolean };
 export const DEMO_STORAGE_KEY = 'virr-admin-demo-v1';
 export function fieldsFor(section: AdminSection, data: DemoData): DemoField[] {
   if (section === 'products') return [
     { label: 'Код' }, { label: 'Име' }, { label: 'Категория', type: 'select', options: (data.categories ?? []).map(r => r.values[1] ?? '') },
-    { label: 'Наличност', type: 'select', options: ['В наличност', 'Изчерпан'] },
-    { label: 'Цена продава', type: 'number', optional: true, min: 0 }, { label: 'Цена купува', type: 'number', min: 0 },
+    { label: 'Наличност', erpOwned: true },
+    { label: 'Цена продава', erpOwned: true }, { label: 'Цена купува', erpOwned: true },
     { label: 'Рафинерия' }, { label: 'Грамаж (г)', type: 'number', min: 0.0001 }, { label: 'Проба' }, { label: 'Държава' }, { label: 'Описание', type: 'textarea', optional: true },
   ];
   const columns = section === 'categories' ? ['Код', 'Категория'] : section === 'customers' ? ['Код', 'Име', 'Вид', 'Поръчки', 'Обща стойност'] : adminTables[section]?.columns ?? ['Код', 'Име'];
@@ -30,6 +30,7 @@ export function initialDemoData(): DemoData {
 }
 export function validateRecord(fields: DemoField[], values: string[], rows: DemoRecord[], key?: string): string | null {
   for (const [index, field] of fields.entries()) {
+    if (field.erpOwned) continue;
     const value = values[index]?.trim() ?? '';
     if (!value && !field.optional) return `Попълнете „${field.label}“.`;
     if (value.length > 4000) return `„${field.label}“ е твърде дълго.`;
@@ -41,7 +42,9 @@ export function validateRecord(fields: DemoField[], values: string[], rows: Demo
 }
 export function saveDemoRecord(data: DemoData, section: AdminSection, values: string[], key: string): DemoData {
   const rows = data[section] ?? [];
-  const record = { key, values: values.map(v => v.trim()) };
+  const existing = rows.find(r => r.key === key);
+  const fields = fieldsFor(section, data);
+  const record = { key, values: values.map((v,i) => fields[i]?.erpOwned ? existing?.values[i] ?? '' : v.trim()) };
   return { ...data, [section]: rows.some(r => r.key === key) ? rows.map(r => r.key === key ? record : r) : [...rows, record] };
 }
 export function deleteDemoRecords(data: DemoData, section: AdminSection, keys: string[]): DemoData {
