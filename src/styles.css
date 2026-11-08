@@ -342,19 +342,19 @@
 .erp-available { color:var(--positive); }
 .erp-unavailable { color:var(--destructive); }
 .erp-table-footer { display:flex; justify-content:space-between; padding:12px 16px; color:var(--muted-foreground); font-size:10px; }
-.with-categories .erp-table-scroll table { min-width:1080px; font-size:14px; }
-.with-categories .erp-table-scroll th { font-size:13px; padding:16px 13px; }
-.with-categories .erp-table-scroll td { padding:10px 13px; height:66px; }
-.with-categories .erp-product { gap:13px; }
-.with-categories .erp-product img { width:38px; height:38px; }
-.with-categories .erp-product strong { font-size:14px; }
-.with-categories .erp-table-scroll input[type=checkbox] { width:20px; height:20px; }
-.with-categories .erp-table-scroll button { width:44px; height:44px; }
-.with-categories .erp-table-scroll button svg { width:20px; height:20px; }
-.with-categories .erp-list-heading { min-height:60px; padding:13px 20px; }
-.with-categories .erp-list-heading h2 { font-size:15px; }
-.with-categories .erp-list-heading > span, .with-categories .erp-selection { font-size:13px; }
-.with-categories .erp-table-footer { padding:15px 20px; font-size:13px; }
+.with-categories .erp-table-scroll table { min-width:1240px; font-size:16px; }
+.with-categories .erp-table-scroll th { font-size:15px; padding:18px 15px; }
+.with-categories .erp-table-scroll td { padding:12px 15px; height:76px; }
+.with-categories .erp-product { gap:15px; }
+.with-categories .erp-product img { width:44px; height:44px; }
+.with-categories .erp-product strong { font-size:16px; }
+.with-categories .erp-table-scroll input[type=checkbox] { width:23px; height:23px; }
+.with-categories .erp-table-scroll button { width:50px; height:50px; }
+.with-categories .erp-table-scroll button svg { width:23px; height:23px; }
+.with-categories .erp-list-heading { min-height:68px; padding:15px 23px; }
+.with-categories .erp-list-heading h2 { font-size:17px; }
+.with-categories .erp-list-heading > span, .with-categories .erp-selection { font-size:15px; }
+.with-categories .erp-table-footer { padding:17px 23px; font-size:15px; }
 .erp-empty { padding:36px; text-align:center; color:var(--muted-foreground); }
 .erp-detail { border-block:1px solid var(--border); margin-top:24px; padding:20px 0; }
 .erp-detail > div { display:flex; justify-content:space-between; align-items:center; }
