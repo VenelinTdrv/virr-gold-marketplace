@@ -42,5 +42,5 @@
 - [x] Verify navigation and retained demo screens.
 
 # Storefront product pages
-- [ ] Open every catalog product on its own address instead of a product dialog.
-- [ ] Preserve product details, storefront design and the existing cart; verify direct opening and refresh.
+- [x] Open every catalog product on its own address instead of a product dialog.
+- [x] Preserve product details, storefront design and the existing cart; verify direct opening and refresh.
