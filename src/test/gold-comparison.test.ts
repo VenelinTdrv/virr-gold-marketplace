@@ -1,6 +1,7 @@
 import { readFileSync } from "node:fs";
 import { beforeAll, beforeEach, describe, expect, it } from "vitest";
 import { goldMarkup } from "@/lib/shop/goldMarkup";
+import { storefrontProducts } from '@/lib/shop/storefront-products';
 
 const script = readFileSync("public/gold/app.js", "utf8");
 
@@ -28,6 +29,7 @@ describe("Gold comparison selection", () => {
   beforeEach(() => {
     document.body.innerHTML = goldMarkup;
     localStorage.clear();
+    Object.assign(window, { goldProducts: storefrontProducts });
   });
 
   it("requires at least two products before comparison is available", () => {
