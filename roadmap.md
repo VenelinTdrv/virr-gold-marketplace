@@ -51,5 +51,5 @@
 - [x] Verify article saving, product readback, refresh and mobile layout.
 
 # Delivery status examples
-- [ ] Show delivery within three weeks for three sample products across catalog, detail and comparison without changing stock or ordering.
-- [ ] Verify the status on desktop and mobile.
+- [x] Show delivery within three weeks for three sample products across catalog, detail and comparison without changing stock or ordering.
+- [x] Verify the status on desktop and mobile.
