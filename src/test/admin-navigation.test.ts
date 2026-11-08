@@ -11,4 +11,8 @@ describe('Admin nomenclatures-only navigation', () => {
     expect(isAdminSection('profit')).toBe(false);
     expect(isAdminSection('settings')).toBe(false);
   });
+  it('excludes bundles from available sections', () => {
+    expect(isAdminSection('bundles')).toBe(false);
+    expect(adminGroups.flatMap(group => group.items.map(item => item.id))).not.toContain('bundles');
+  });
 });
