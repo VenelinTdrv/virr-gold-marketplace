@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminPreviewRouteImport } from './routes/admin-preview'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as CartRouteImport } from './routes/cart'
+import { Route as P2pRouteImport } from './routes/p2p'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as GoldIdRouteImport } from './routes/gold.$id'
 import { Route as ProductIdRouteImport } from './routes/product.$id'
@@ -37,6 +38,11 @@ const CartRoute = CartRouteImport.update({
   path: '/cart',
   getParentRoute: () => rootRouteImport,
 } as any)
+const P2pRoute = P2pRouteImport.update({
+  id: '/p2p',
+  path: '/p2p',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
   path: '/reset-password',
@@ -58,6 +64,7 @@ export interface FileRoutesByFullPath {
   '/admin-preview': typeof AdminPreviewRoute
   '/auth': typeof AuthRoute
   '/cart': typeof CartRoute
+  '/p2p': typeof P2pRoute
   '/reset-password': typeof ResetPasswordRoute
   '/gold/$id': typeof GoldIdRoute
   '/product/$id': typeof ProductIdRoute
@@ -67,6 +74,7 @@ export interface FileRoutesByTo {
   '/admin-preview': typeof AdminPreviewRoute
   '/auth': typeof AuthRoute
   '/cart': typeof CartRoute
+  '/p2p': typeof P2pRoute
   '/reset-password': typeof ResetPasswordRoute
   '/gold/$id': typeof GoldIdRoute
   '/product/$id': typeof ProductIdRoute
@@ -77,6 +85,7 @@ export interface FileRoutesById {
   '/admin-preview': typeof AdminPreviewRoute
   '/auth': typeof AuthRoute
   '/cart': typeof CartRoute
+  '/p2p': typeof P2pRoute
   '/reset-password': typeof ResetPasswordRoute
   '/gold/$id': typeof GoldIdRoute
   '/product/$id': typeof ProductIdRoute
@@ -88,6 +97,7 @@ export interface FileRouteTypes {
     | '/admin-preview'
     | '/auth'
     | '/cart'
+    | '/p2p'
     | '/reset-password'
     | '/gold/$id'
     | '/product/$id'
@@ -97,6 +107,7 @@ export interface FileRouteTypes {
     | '/admin-preview'
     | '/auth'
     | '/cart'
+    | '/p2p'
     | '/reset-password'
     | '/gold/$id'
     | '/product/$id'
@@ -106,6 +117,7 @@ export interface FileRouteTypes {
     | '/admin-preview'
     | '/auth'
     | '/cart'
+    | '/p2p'
     | '/reset-password'
     | '/gold/$id'
     | '/product/$id'
@@ -116,6 +128,7 @@ export interface RootRouteChildren {
   AdminPreviewRoute: typeof AdminPreviewRoute
   AuthRoute: typeof AuthRoute
   CartRoute: typeof CartRoute
+  P2pRoute: typeof P2pRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   GoldIdRoute: typeof GoldIdRoute
   ProductIdRoute: typeof ProductIdRoute
@@ -151,6 +164,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CartRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/p2p': {
+      id: '/p2p'
+      path: '/p2p'
+      fullPath: '/p2p'
+      preLoaderRoute: typeof P2pRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/reset-password': {
       id: '/reset-password'
       path: '/reset-password'
@@ -180,6 +200,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminPreviewRoute: AdminPreviewRoute,
   AuthRoute: AuthRoute,
   CartRoute: CartRoute,
+  P2pRoute: P2pRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   GoldIdRoute: GoldIdRoute,
   ProductIdRoute: ProductIdRoute,
