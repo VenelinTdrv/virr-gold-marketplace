@@ -44,3 +44,8 @@
 # Storefront product pages
 - [x] Open every catalog product on its own address instead of a product dialog.
 - [x] Preserve product details, storefront design and the existing cart; verify direct opening and refresh.
+
+# Product description sections
+- [x] Show four description tabs on every storefront product page.
+- [x] Read matching article descriptions in the browser-local demo without changing ERP prices or stock.
+- [x] Verify article saving, product readback, refresh and mobile layout.
