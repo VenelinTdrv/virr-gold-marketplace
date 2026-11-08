@@ -14,3 +14,4 @@
 
 - Shop presentation uses shared semantic CSS tokens and the shared Button component; catalog asset imports are centralized in products.ts so demo imagery stays consistent across views.
 - The uploaded storefront's comparison uses its existing selection state and native dialog to avoid a separate, inconsistent product selection.
+- Uploaded storefront buyer validation uses a shared Zod schema exposed before its script loads; buyer details stay in the demo form and are rendered with textContent, not interpolated HTML.

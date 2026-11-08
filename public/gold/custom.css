@@ -118,3 +118,19 @@ dialog{position:fixed;inset:0;margin:auto;width:min(850px,94vw);max-width:94vw;m
 :root{--stock-available:#9ce8b8;--stock-unavailable:#ff8585}
 .stock,.comparison-scroll td.stock-available{color:var(--stock-available);font-weight:700}
 .stock.out,.comparison-scroll td.stock-unavailable{color:var(--stock-unavailable);font-weight:700}
+
+.buyertype{border:0;padding:0;margin:22px 0;min-width:0}
+.buyertype legend{font-weight:700;margin-bottom:12px}
+.buyeroptions{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.buyeroptions label{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:6px;padding:14px;min-height:52px;cursor:pointer}
+.buyeroptions label:has(input:checked){border-color:var(--gold);background:var(--pale);color:var(--gold-light)}
+.buyeroptions input{width:22px;height:22px;flex:0 0 auto;accent-color:var(--gold)}
+#companyfields{margin:22px 0;padding:0;border:0;min-width:0}
+#companyfields[hidden]{display:none}
+#companyfields legend{font-weight:700;margin-bottom:14px}
+#checkoutform input{width:100%}
+#checkoutform input[type=radio],#checkoutform input[type=checkbox]{width:22px}
+#checkoutform .primary{min-height:48px;white-space:normal}
+.buyererror{color:var(--stock-unavailable);font-size:12px;margin:12px 0}
+.buyer-review td{overflow-wrap:anywhere}
+@media(max-width:700px){.buyeroptions{grid-template-columns:1fr}.formgrid label{min-width:0}#checkoutform .primary{width:100%}}
