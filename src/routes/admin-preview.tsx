@@ -3,7 +3,8 @@ import { useEffect, useState } from 'react';
 import { Menu, Search, X, ChevronDown, ChevronRight, Folder, Eye, ArrowLeft, MoreVertical, Globe, PanelLeftClose } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ViewSwitch } from '@/components/shop/ViewSwitch';
-import { PRODUCTS, CATEGORIES, fmt } from '@/lib/shop/products';
+import { CATEGORIES, fmt } from '@/lib/shop/products';
+import { adminProducts as PRODUCTS } from '@/lib/shop/admin-products';
 import { previewOrders, previewCustomers } from '@/lib/shop/admin-preview';
 import { adminGroups, adminItems, adminTables, isAdminSection, type AdminSection, type PreviewTable } from '@/lib/shop/admin-sections';
 
@@ -56,7 +57,7 @@ function AdminPreview() {
   } else if (section === 'categories') {
     table = { columns: ['Код','Категория','Брой артикули'], rows: CATEGORIES.map(c => [c.id,c.label,String(PRODUCTS.filter(p => p.category === c.id).length)]) };
   } else table = adminTables[section] ?? { columns: ['Код','Име'], rows: [] };
-  const products = PRODUCTS.filter(p => matches(p.name + ' ' + p.mint,query.name) && matches(p.id,query.code) && (category === 'all' || p.category === category) && (section !== 'out-of-stock' || p.stock === 0));
+  const products = PRODUCTS.filter(p => matches(p.name + ' ' + p.mint,query.name) && matches(p.id,query.code) && (category === 'all' || p.category === category) && (section !== 'out-of-stock' || !p.stock));
   const rows = table.rows.filter(row => matches(row.join(' '),query.name) && matches(row[0] ?? '',query.code));
   const ids = productView ? products.map(p => p.id) : rows.map(r => r[0] ?? '');
   function toggle(id: string) { setSelected(current => current.includes(id) ? current.filter(v => v !== id) : [...current,id]); }
