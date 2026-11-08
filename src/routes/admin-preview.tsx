@@ -31,7 +31,8 @@ function AdminPreview() {
     for (const link of shopStyles) link.media = 'not all';
     return () => { shopStyles.forEach((link, index) => { link.media = originalMedia[index] ?? ''; }); };
   }, []);
-  const { section = 'products' } = Route.useSearch();
+  const search = Route.useSearch();
+  const section = isAdminSection(search.section) ? search.section : 'products';
   const navigate = useNavigate();
   const [collapsed, setCollapsed] = useState(false);
   const [closedGroups, setClosedGroups] = useState<string[]>([]);
