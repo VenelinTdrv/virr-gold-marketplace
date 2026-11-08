@@ -1,5 +1,5 @@
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Menu, Search, X, ChevronDown, ChevronRight, Folder, Eye, ArrowLeft, MoreVertical, Globe, PanelLeftClose } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ViewSwitch } from '@/components/shop/ViewSwitch';
@@ -23,6 +23,13 @@ export const Route = createFileRoute('/admin-preview')({
 });
 
 function AdminPreview() {
+  useEffect(() => {
+    // The uploaded shop stylesheet has global selectors and survives client navigation.
+    const shopStyles = Array.from(document.querySelectorAll<HTMLLinkElement>('link[rel="stylesheet"]')).filter(link => link.href.endsWith('/gold/custom.css'));
+    const originalMedia = shopStyles.map(link => link.media);
+    for (const link of shopStyles) link.media = 'not all';
+    return () => { shopStyles.forEach((link, index) => { link.media = originalMedia[index] ?? ''; }); };
+  }, []);
   const { section = 'products' } = Route.useSearch();
   const navigate = useNavigate();
   const [collapsed, setCollapsed] = useState(false);
