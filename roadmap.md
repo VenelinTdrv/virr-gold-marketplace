@@ -14,5 +14,5 @@
 - [x] Verify signed-in profile saving and storefront entry on desktop and mobile.
 
 # Admin preview
-- [ ] Create a read-only demonstration panel for products, orders and customers.
-- [ ] Add a storefront entry and verify navigation, search and mobile layout.
+- [x] Create a read-only demonstration panel for products, orders and customers.
+- [x] Add a storefront entry and verify navigation, search and mobile layout.
