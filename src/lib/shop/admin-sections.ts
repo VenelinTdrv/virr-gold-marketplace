@@ -35,7 +35,7 @@ const allAdminGroups = [
   ] },
 ] as const;
 export type AdminSection = typeof allAdminGroups[number]['items'][number]['id'];
-export const adminGroups = allAdminGroups.filter(group => group.title === 'Номенклатури');
+export const adminGroups = allAdminGroups.filter(group => group.title === 'Номенклатури').map(group => ({ ...group, items: group.items.filter(item => item.id !== 'bundles') }));
 export const adminItems = adminGroups.flatMap(g => [...g.items]);
 export function isAdminSection(value: unknown): value is AdminSection { return typeof value === 'string' && adminItems.some(i => i.id === value); }
 
