@@ -15,6 +15,7 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { CartProvider } from "../lib/shop/cart";
 import { ShopHeader, CartDrawer, ShopFooter } from "../components/shop/Layout";
+import { AccountProvider } from "../components/shop/AccountProvider";
 
 function NotFoundComponent() {
   return (
@@ -118,10 +119,11 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
-  const isGold = useRouterState({ select: (s) => s.location.pathname === "/" });
+  const isGold = useRouterState({ select: (s) => ["/", "/auth", "/reset-password"].includes(s.location.pathname) });
 
   return (
     <QueryClientProvider client={queryClient}>
+      <AccountProvider>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <CartProvider>
         {isGold ? (
@@ -135,6 +137,7 @@ function RootComponent() {
           </>
         )}
       </CartProvider>
+      </AccountProvider>
     </QueryClientProvider>
   );
 }
