@@ -349,6 +349,20 @@
 .erp-detail dl { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:20px; }
 .erp-detail dt { color:var(--muted-foreground); font-size:10px; margin-bottom:6px; }
 .erp-detail dd { margin:0; overflow-wrap:anywhere; }
+.erp-crud-toolbar { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:20px; }
+.erp-row-actions { display:flex; gap:2px; }
+.erp-preview .erp-danger { color:var(--destructive); }
+.erp-notice { color:var(--primary); margin-bottom:16px; }
+.erp-dialog { background:var(--card); color:var(--foreground); border:1px solid var(--border); border-radius:8px; width:min(680px,calc(100% - 28px)); max-height:calc(100svh - 28px); padding:24px; margin:auto; overflow:auto; }
+.erp-dialog::backdrop { background:var(--auth-overlay); }
+.erp-dialog-heading { display:flex; gap:12px; align-items:center; justify-content:space-between; margin-bottom:20px; }
+.erp-dialog-heading h2 { font-size:20px; font-weight:700; margin:0; }
+.erp-dialog-actions { display:flex; justify-content:flex-end; gap:10px; margin-top:24px; }
+.erp-form-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
+.erp-form-grid label { display:block; font-size:12px; min-width:0; }
+.erp-form-grid input,.erp-form-grid select,.erp-form-grid textarea { display:block; margin-top:7px; width:100%; min-width:0; background:var(--card); color:var(--foreground); border:1px solid var(--border); border-radius:4px; padding:10px; font:inherit; }
+.erp-form-grid textarea { min-height:80px; resize:vertical; }
+@media(max-width:650px) { .erp-form-grid { grid-template-columns:1fr; } .erp-dialog { padding:18px; } .erp-list-heading { flex-wrap:wrap; } }
 .erp-preview .erp-footer { display:flex; justify-content:space-between; padding:24px 0 0; margin-top:24px; border:0; background:transparent; color:var(--muted-foreground); font-size:10px; }
 .erp-footer > span { display:flex; gap:4px; align-items:center; }
 .erp-footer svg { width:12px; }

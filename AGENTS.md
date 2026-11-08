@@ -16,8 +16,8 @@
 - The uploaded storefront's comparison uses its existing selection state and native dialog to avoid a separate, inconsistent product selection.
 - Uploaded storefront buyer validation uses a shared Zod schema exposed before its script loads; buyer details stay in the demo form and are rendered with textContent, not interpolated HTML.
 - Customer account UI is React-owned and portaled into the uploaded storefront header; a single AccountProvider manages identity transitions, and profile reads/writes use authenticated server functions with owner-only RLS to keep personal data private.
-- The public Admin preview is read-only and uses fictional order/customer fixtures and sample products only; it must never query private accounts or mutate ERP data.
+- The public Admin preview uses browser-local demonstration CRUD through a shared record model and schema-driven forms; it must never query private accounts, write to the live CMS or mutate ERP data.
 - Admin product fixtures are separate from the shop catalog; supplied reference prices and availability remain explicit, and unknown selling prices display as unavailable rather than invented values.
 - Admin preview navigation is defined in a shared section registry and persisted in validated URL search state so preview sections survive refresh; its light theme is scoped to the workspace to preserve the storefront theme.
 - Disable the uploaded storefront's global stylesheet while the admin preview is mounted and restore it on exit, so client navigation cannot contaminate admin layout or colors.
-- The shared User/Admin view switch only navigates between the storefront and read-only admin preview; it never changes account roles or grants privileges.
+- The shared User/Admin view switch only navigates between the storefront and isolated admin demo; it never changes account roles or grants privileges.

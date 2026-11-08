@@ -28,3 +28,8 @@
 # CMS preview menus
 - [x] Add pages, homepage/banners, media, menus, SEO and shop settings under nomenclatures with read-only sample records.
 - [x] Verify all six screens, search, details and refresh persistence.
+
+# Demonstration CMS CRUD
+- [x] Add isolated demo records and forms for create, read, update and confirmed delete in every visible menu.
+- [x] Preserve demo changes on refresh and allow restoring examples without modifying the storefront or ERP.
+- [x] Test record validation and verify CRUD across all menus and mobile layout.
