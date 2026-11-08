@@ -1,4 +1,5 @@
 const products=window.goldProducts;
+function availability(p,withQuantity=false){return p.deliveryWeeks?`Доставка до ${p.deliveryWeeks} седмици`:p.stock?'В наличност'+(withQuantity?' · '+p.stock+' бр.':''):'Изчерпан'}
 const cats=[['all','Всички продукти'],['bars','Златни кюлчета'],['coins','Инвестиционни монети'],['numis','Нумизматика'],['accessories','Аксесоари']];
 const WRANGES={lt5:p=>p.weight>0&&p.weight<=5,'5to31':p=>p.weight>5&&p.weight<=31.1035,'31to100':p=>p.weight>31.1035&&p.weight<=100,gt100:p=>p.weight>100};
 const $=id=>document.getElementById(id),money=n=>n.toLocaleString('bg-BG',{minimumFractionDigits:2,maximumFractionDigits:2})+' €',buyOf=p=>p.weight?Math.round(p.price*0.95):null,OZ=31.1034768,ozf=w=>(w/OZ).toLocaleString('bg-BG',{maximumFractionDigits:2}),gram=p=>p.weight===31.1035?'31,1035 г (1 oz)':p.weight+' г ('+ozf(p.weight)+' oz)';

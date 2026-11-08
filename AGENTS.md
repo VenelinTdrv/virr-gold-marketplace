@@ -24,4 +24,5 @@
 
 - Conditional demo fields share visibility rules across forms, validation, saving and details; legacy browser records are upgraded to preserve existing data.
 - Uploaded storefront product pages use /gold/$id and shared storefront product data with the original cart script so catalog and detail prices, IDs and cart quantities stay consistent; legacy /product/$id routes remain unchanged.
+- Storefront demo delivery lead times are optional product data, rendered consistently in catalog, detail and comparison without changing ERP stock or cart limits.
 - Storefront description tabs are React-owned and read matching browser-local admin article descriptions after hydration; stable article codes take precedence over unique product identity matches, and ERP price/stock data is never overridden.
