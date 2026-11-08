@@ -27,4 +27,4 @@
 
 # CMS preview menus
 - [x] Add pages, homepage/banners, media, menus, SEO and shop settings under nomenclatures with read-only sample records.
-- [ ] Verify all six screens, search, details and refresh persistence.
+- [x] Verify all six screens, search, details and refresh persistence.
