@@ -41,7 +41,12 @@ const allAdminGroups = [
   ] },
 ] as const;
 export type AdminSection = typeof allAdminGroups[number]['items'][number]['id'];
-export const adminGroups = allAdminGroups.filter(group => group.title === 'Номенклатури').map(group => ({ ...group, items: group.items.filter(item => item.id !== 'bundles' && item.id !== 'assistants') }));
+const settingsSections: readonly AdminSection[] = ['pages', 'homepage', 'media', 'menus', 'seo', 'shop-settings'];
+const nomenclatureItems = allAdminGroups.flatMap(group => group.title === 'Номенклатури' ? [...group.items] : []).filter(item => item.id !== 'bundles' && item.id !== 'assistants');
+export const adminGroups = [
+  { title: 'Номенклатури', items: nomenclatureItems.filter(item => !settingsSections.includes(item.id)) },
+  { title: 'Настройки', items: nomenclatureItems.filter(item => settingsSections.includes(item.id)) },
+];
 export const adminItems = adminGroups.flatMap(g => [...g.items]);
 export function isAdminSection(value: unknown): value is AdminSection { return typeof value === 'string' && adminItems.some(i => i.id === value); }
 

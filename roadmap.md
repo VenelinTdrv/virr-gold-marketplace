@@ -36,3 +36,7 @@
 # Customer type in admin preview
 - [x] Add individual/company selection and company fields without affecting real accounts.
 - [x] Verify saving, editing and refresh for both client types and migrate existing demo records.
+
+# Settings navigation
+- [x] Move the six CMS sections from nomenclatures into a separate collapsible Настройки menu.
+- [ ] Verify navigation and retained demo screens.
