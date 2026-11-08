@@ -153,3 +153,9 @@ dialog{position:fixed;inset:0;margin:auto;width:min(850px,94vw);max-width:94vw;m
 .buyback small{text-align:center;opacity:.8}
 .formerror{color:#e88;min-height:1em;margin:0}
 @media(max-width:760px){.buyback{grid-template-columns:1fr}.buyback .buybackinfo{order:-1}}
+.buyback{grid-template-columns:minmax(0,1.2fr) minmax(0,1fr)}
+.buyback ol{list-style:decimal}
+.buybacksum b{white-space:nowrap}
+.buybackitem .visual{width:56px;max-height:90px;overflow:hidden}
+.buybackinfo h3{font-size:20px;margin:0 0 8px}
+@media(max-width:760px){.buyback{grid-template-columns:1fr}}
