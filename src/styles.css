@@ -439,7 +439,7 @@
   min-height: 100vh;
   font-family: "Manrope", sans-serif;
 }
-.p2p a { text-decoration: none; color: inherit; }
+.p2p a { text-decoration: none; }
 
 .p2p-header { background: var(--p2p-bg); }
 .p2p-header-inner {
