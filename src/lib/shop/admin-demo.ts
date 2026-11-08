@@ -5,14 +5,15 @@ import { CATEGORIES, fmt } from './products';
 
 export type DemoRecord = { key: string; values: string[] };
 export type DemoData = Partial<Record<AdminSection, DemoRecord[]>>;
-export type DemoField = { label: string; type?: 'number' | 'textarea' | 'select'; optional?: boolean; options?: string[]; min?: number; erpOwned?: boolean };
+export type DemoField = { label: string; type?: 'number' | 'textarea' | 'select'; optional?: boolean; options?: string[]; min?: number; erpOwned?: boolean; descriptionSection?: boolean };
 export const DEMO_STORAGE_KEY = 'virr-admin-demo-v1';
 export function fieldsFor(section: AdminSection, data: DemoData): DemoField[] {
   if (section === 'products') return [
     { label: 'Код' }, { label: 'Име' }, { label: 'Категория', type: 'select', options: (data.categories ?? []).map(r => r.values[1] ?? '') },
     { label: 'Наличност', erpOwned: true },
     { label: 'Цена продава', erpOwned: true }, { label: 'Цена купува', erpOwned: true },
-    { label: 'Рафинерия' }, { label: 'Грамаж (г)', type: 'number', min: 0.0001 }, { label: 'Проба' }, { label: 'Държава' }, { label: 'Описание', type: 'textarea', optional: true },
+    { label: 'Рафинерия' }, { label: 'Грамаж (г)', type: 'number', min: 0.0001 }, { label: 'Проба' }, { label: 'Държава' },
+    ...['Защо да купите?', 'История', 'Технически детайли', 'Доставка'].map((label): DemoField => ({ label, type: 'textarea', optional: true, descriptionSection: true })),
   ];
   const columns = section === 'categories' ? ['Код', 'Категория'] : section === 'customers' ? ['Код', 'Име', 'Вид', 'Поръчки', 'Обща стойност'] : adminTables[section]?.columns ?? ['Код', 'Име'];
   return columns.map(label => label === 'Поръчки' ? { label, type: 'number', min: 0 } : label === 'Описание' || label === 'Съдържание' || label === 'Връзки' ? { label, type: 'textarea' } : { label });
@@ -21,7 +22,7 @@ export function initialDemoData(): DemoData {
   const data: DemoData = {};
   for (const item of adminItems) {
     let rows = adminTables[item.id]?.rows ?? [];
-    if (item.id === 'products') rows = adminProducts.map(p => [p.id, p.name, CATEGORIES.find(c => c.id === p.category)?.label ?? '', p.stock ? 'В наличност' : 'Изчерпан', p.price === null ? '' : String(p.price), String(p.buyback), p.mint, String(p.weightG), p.fineness, p.country, p.description]);
+    if (item.id === 'products') rows = adminProducts.map(p => [p.id, p.name, CATEGORIES.find(c => c.id === p.category)?.label ?? '', p.stock ? 'В наличност' : 'Изчерпан', p.price === null ? '' : String(p.price), String(p.buyback), p.mint, String(p.weightG), p.fineness, p.country, p.description, '', '', '']);
     if (item.id === 'categories') rows = CATEGORIES.map(c => [c.id, c.label]);
     if (item.id === 'customers') rows = previewCustomers.map(c => [c.id, c.name, c.type, String(c.orders), fmt(c.total)]);
     data[item.id] = rows.map((values, index) => ({ key: `${item.id}-${index}`, values: [...values] }));
@@ -63,6 +64,7 @@ export function restoreDemoData(raw: string): DemoData | null {
       const keys = new Set<string>();
       const codes = new Set<string>();
       for (const row of rows) {
+        if (item.id === 'products' && row && Array.isArray(row.values) && row.values.length === 11) row.values = [...row.values, '', '', ''];
         if (!row || typeof row !== 'object' || typeof row.key !== 'string' || keys.has(row.key) || !Array.isArray(row.values) || row.values.length !== width || row.values.some((v: unknown) => typeof v !== 'string' || v.length > 4000)) return null;
         const code = row.values[0]?.trim().toLocaleLowerCase('bg');
         if (!code || codes.has(code)) return null;

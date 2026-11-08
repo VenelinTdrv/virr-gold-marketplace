@@ -38,4 +38,16 @@ describe('Isolated demonstration CRUD', () => {
     expect(restoreDemoData('{bad')).toBeNull();
     expect(restoreDemoData('{}')).toBeNull();
   });
+  it('keeps all four description values separate after saving and restoring', () => {
+    const data = initialDemoData(); const row = data.products?.[0];
+    if (!row) throw new Error('Missing fixture');
+    const values = [...row.values]; values.splice(10,4,'Причини','Исторически текст','Технически текст','Условия за доставка');
+    const restored = restoreDemoData(JSON.stringify(saveDemoRecord(data,'products',values,row.key)));
+    expect(restored?.products?.[0]?.values.slice(10)).toEqual(['Причини','Исторически текст','Технически текст','Условия за доставка']);
+  });
+  it('preserves old descriptions when upgrading existing browser records', () => {
+    const data = initialDemoData(); data.products = data.products?.map(row => ({...row, values:row.values.slice(0,11)})) ?? [];
+    const restored = restoreDemoData(JSON.stringify(data));
+    expect(restored?.products?.[0]?.values.slice(10)).toEqual([data.products[0]?.values[10],'','','']);
+  });
 });
