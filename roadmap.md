@@ -39,4 +39,4 @@
 
 # Settings navigation
 - [x] Move the six CMS sections from nomenclatures into a separate collapsible Настройки menu.
-- [ ] Verify navigation and retained demo screens.
+- [x] Verify navigation and retained demo screens.
