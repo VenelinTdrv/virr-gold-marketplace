@@ -201,6 +201,7 @@
 .admin-section-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-bottom: 16px; }
 .admin-section-head h2 { font: 24px var(--font-display); margin: 0; color: var(--foreground); }
 .admin-table-scroll { width: 100%; overflow-x: auto; border-top: 1px solid var(--border); }
+.admin-hidden-label { font-size: 0; }
 .admin-table-scroll table { width: 100%; min-width: 720px; border-collapse: collapse; font-size: 12px; }
 .admin-table-scroll th { color: var(--muted-foreground); font-size: 10px; font-weight: 500; text-align: left; padding: 16px 12px; background: var(--hero-ink); }
 .admin-table-scroll td { border-bottom: 1px solid var(--border); text-align: left; padding: 16px 12px; }
