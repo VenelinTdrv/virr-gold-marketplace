@@ -15,7 +15,7 @@ export function fieldsFor(section: AdminSection, data: DemoData): DemoField[] {
     { label: 'Рафинерия' }, { label: 'Грамаж (г)', type: 'number', min: 0.0001 }, { label: 'Проба' }, { label: 'Държава' }, { label: 'Описание', type: 'textarea', optional: true },
   ];
   const columns = section === 'categories' ? ['Код', 'Категория'] : section === 'customers' ? ['Код', 'Име', 'Вид', 'Поръчки', 'Обща стойност'] : adminTables[section]?.columns ?? ['Код', 'Име'];
-  return columns.map(label => label === 'Поръчки' ? { label, type: 'number', min: 0 } : { label, type: label === 'Описание' || label === 'Съдържание' || label === 'Връзки' ? 'textarea' : undefined });
+  return columns.map(label => label === 'Поръчки' ? { label, type: 'number', min: 0 } : label === 'Описание' || label === 'Съдържание' || label === 'Връзки' ? { label, type: 'textarea' } : { label });
 }
 export function initialDemoData(): DemoData {
   const data: DemoData = {};

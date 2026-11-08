@@ -3,7 +3,7 @@ import { Save, X, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { type DemoField, type DemoRecord, validateRecord } from '@/lib/shop/admin-demo';
 
-type Props = { title: string; fields?: DemoField[]; record?: DemoRecord; rows?: DemoRecord[]; confirm?: string; onSave?: (values: string[]) => void; onConfirm?: () => void; onClose: () => void };
+type Props = { title: string; fields?: DemoField[]; record?: DemoRecord | undefined; rows?: DemoRecord[]; confirm?: string; onSave?: (values: string[]) => void; onConfirm?: () => void; onClose: () => void };
 export function AdminDemoDialog({ title, fields = [], record, rows = [], confirm, onSave, onConfirm, onClose }: Props) {
   const ref = useRef<HTMLDialogElement>(null);
   const [values, setValues] = useState(() => fields.map((f, i) => record?.values[i] ?? (f.type === 'select' ? f.options?.[0] ?? '' : '')));
