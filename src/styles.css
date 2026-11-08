@@ -265,12 +265,23 @@
   --accent: var(--secondary); --accent-foreground: var(--primary);
   --border: oklch(0.91 0.007 160); --input: var(--border); --ring: var(--primary);
   --positive: oklch(0.45 0.105 155); --destructive: oklch(0.53 0.18 25);
+  --ink: var(--foreground); --line: var(--border); --pale: var(--secondary);
+  --dark: var(--primary); --green: var(--primary);
+  --popover: var(--card); --popover-foreground: var(--foreground);
+  color-scheme:light;
   display:grid; grid-template-columns:268px minmax(0,1fr); min-height:100svh;
   background:var(--background); color:var(--foreground); font:13px var(--font-sans);
 }
 .erp-preview * { box-sizing:border-box; letter-spacing:0; }
 .erp-preview input, .erp-preview select { color-scheme:light; }
 .erp-preview button { font-family:inherit; box-shadow:none; }
+.erp-preview [data-slot="button"] { background:var(--card); color:var(--foreground); border-color:var(--border); }
+.erp-preview [data-slot="button"]:hover { background:var(--secondary); color:var(--primary); border-color:var(--ring); }
+.erp-preview .view-switch [aria-pressed="true"], .erp-preview .view-switch [aria-pressed="true"]:hover { background:var(--secondary); color:var(--primary); border-color:var(--border); }
+.erp-preview .erp-nav-item.is-active, .erp-preview .erp-categories .is-active { background:var(--secondary); color:var(--primary); }
+.erp-preview input::placeholder { color:var(--muted-foreground); }
+.erp-preview :focus-visible { outline-color:var(--ring); }
+.erp-preview ::selection { background:var(--secondary); color:var(--foreground); }
 .erp-sidebar { height:100svh; position:sticky; top:0; background:var(--card); border-right:1px solid var(--border); display:flex; flex-direction:column; min-width:0; }
 .erp-brand { height:84px; padding:20px 24px; display:flex; align-items:center; gap:12px; font-size:19px; font-weight:800; flex-shrink:0; }
 .erp-brand-icon { display:grid; place-items:center; width:40px; height:44px; border-radius:8px; background:var(--primary); color:var(--primary-foreground); font-size:26px; flex-shrink:0; }
