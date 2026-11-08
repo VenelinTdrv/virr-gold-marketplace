@@ -2,6 +2,7 @@ import { createFileRoute, Link, useNavigate } from '@tanstack/react-router';
 import { useState } from 'react';
 import { Menu, Search, X, ChevronDown, ChevronRight, Folder, Eye, ArrowLeft, MoreVertical, Globe, PanelLeftClose } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { ViewSwitch } from '@/components/shop/ViewSwitch';
 import { PRODUCTS, CATEGORIES, fmt } from '@/lib/shop/products';
 import { previewOrders, previewCustomers } from '@/lib/shop/admin-preview';
 import { adminGroups, adminItems, adminTables, isAdminSection, type AdminSection, type PreviewTable } from '@/lib/shop/admin-sections';
@@ -66,7 +67,7 @@ function AdminPreview() {
       <header className="erp-header">
         <Button variant="ghost" size="icon" aria-label={collapsed ? 'Покажи менюто' : 'Свий менюто'} title={collapsed ? 'Покажи менюто' : 'Свий менюто'} onClick={() => setCollapsed(v => !v)}>{collapsed ? <Menu /> : <PanelLeftClose />}</Button>
         <div className="erp-top-groups">{adminGroups.map(g => <Button variant="ghost" key={g.title} className={g.title === group?.title ? 'is-active' : ''} onClick={() => changeSection(g.items[0].id)}>{g.title}<ChevronDown /></Button>)}</div>
-        <div className="erp-header-actions"><span><Globe />BG</span><Button variant="ghost" size="icon" asChild title="Към магазина"><Link to="/" aria-label="Към магазина"><ArrowLeft /></Link></Button></div>
+        <div className="erp-header-actions"><ViewSwitch view="admin" /><span><Globe />BG</span><Button variant="ghost" size="icon" asChild title="Към магазина"><Link to="/" aria-label="Към магазина"><ArrowLeft /></Link></Button></div>
       </header>
       <main className="erp-main">
         <div className="erp-page-title"><h1>{active?.title}</h1><span className="erp-preview-label"><Eye />Preview</span></div>

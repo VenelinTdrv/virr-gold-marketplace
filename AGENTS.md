@@ -18,3 +18,4 @@
 - Customer account UI is React-owned and portaled into the uploaded storefront header; a single AccountProvider manages identity transitions, and profile reads/writes use authenticated server functions with owner-only RLS to keep personal data private.
 - The public Admin preview is read-only and uses fictional order/customer fixtures and sample products only; it must never query private accounts or mutate ERP data.
 - Admin preview navigation is defined in a shared section registry and persisted in validated URL search state so preview sections survive refresh; its light theme is scoped to the workspace to preserve the storefront theme.
+- The shared User/Admin view switch only navigates between the storefront and read-only admin preview; it never changes account roles or grants privileges.
