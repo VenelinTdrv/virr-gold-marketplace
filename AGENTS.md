@@ -21,3 +21,5 @@
 - Admin preview navigation is defined in a shared section registry and persisted in validated URL search state so preview sections survive refresh; its light theme is scoped to the workspace to preserve the storefront theme.
 - Disable the uploaded storefront's global stylesheet while the admin preview is mounted and restore it on exit, so client navigation cannot contaminate admin layout or colors.
 - The shared User/Admin view switch only navigates between the storefront and isolated admin demo; it never changes account roles or grants privileges.
+
+- Conditional demo fields share visibility rules across forms, validation, saving and details; legacy browser records are upgraded to preserve existing data.
