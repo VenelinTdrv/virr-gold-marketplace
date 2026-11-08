@@ -15,4 +15,7 @@ describe('Admin nomenclatures-only navigation', () => {
     expect(isAdminSection('bundles')).toBe(false);
     expect(adminGroups.flatMap(group => group.items.map(item => item.id))).not.toContain('bundles');
   });
+  it.each(['pages', 'homepage', 'media', 'menus', 'seo', 'shop-settings'])('includes CMS section %s', section => {
+    expect(isAdminSection(section)).toBe(true);
+  });
 });
