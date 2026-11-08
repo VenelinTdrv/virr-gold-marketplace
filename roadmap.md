@@ -16,3 +16,8 @@
 # Admin preview
 - [x] Create a read-only demonstration panel for products, orders and customers.
 - [x] Add a storefront entry and verify navigation, search and mobile layout.
+
+# HyperERP-style admin preview
+- [x] Apply light workspace, collapsible grouped navigation and article table from the references.
+- [x] Add preview surfaces for operations, nomenclatures, reports and administration.
+- [x] Verify filters, selection, navigation and mobile layout without live ERP calls.
