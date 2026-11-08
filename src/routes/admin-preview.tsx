@@ -7,7 +7,10 @@ import { previewOrders, previewCustomers } from '@/lib/shop/admin-preview';
 import { adminGroups, adminItems, adminTables, isAdminSection, type AdminSection, type PreviewTable } from '@/lib/shop/admin-sections';
 
 export const Route = createFileRoute('/admin-preview')({
-  validateSearch: (search: Record<string, unknown>): { section?: AdminSection } => ({ section: isAdminSection(search.section) ? search.section : undefined }),
+  validateSearch: (search: Record<string, unknown>): { section?: AdminSection } => {
+    const section = search['section'];
+    return isAdminSection(section) ? { section } : {};
+  },
   head: () => ({ meta: [
     { title: 'Admin panel preview | Virr Gold' },
     { name: 'description', content: 'Примерен административен панел на Virr Gold по HyperERP: артикули, операции, справки и администрация.' },

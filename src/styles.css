@@ -269,6 +269,7 @@
   background:var(--background); color:var(--foreground); font:13px var(--font-sans);
 }
 .erp-preview * { box-sizing:border-box; letter-spacing:0; }
+.erp-preview input, .erp-preview select { color-scheme:light; }
 .erp-preview button { font-family:inherit; box-shadow:none; }
 .erp-sidebar { height:100svh; position:sticky; top:0; background:var(--card); border-right:1px solid var(--border); display:flex; flex-direction:column; min-width:0; }
 .erp-brand { height:84px; padding:20px 24px; display:flex; align-items:center; gap:12px; font-size:19px; font-weight:800; flex-shrink:0; }
