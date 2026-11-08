@@ -1,6 +1,6 @@
 import { ClipboardList, ShoppingBag, RotateCcw, Truck, ArrowLeftRight, Wallet, Package, Boxes, LayoutGrid, Users, Globe, MapPin, Warehouse, Landmark, UserRoundPen, Layers, PackageSearch, CircleDollarSign, PackageX, UserCog, SlidersHorizontal } from 'lucide-react';
 
-export const adminGroups = [
+const allAdminGroups = [
   { title: 'Операции', items: [
     { id: 'orders', title: 'Поръчки', icon: ClipboardList },
     { id: 'sales', title: 'Продажби', icon: ShoppingBag },
@@ -34,7 +34,8 @@ export const adminGroups = [
     { id: 'settings', title: 'Променливи на платформата', icon: SlidersHorizontal },
   ] },
 ] as const;
-export type AdminSection = typeof adminGroups[number]['items'][number]['id'];
+export type AdminSection = typeof allAdminGroups[number]['items'][number]['id'];
+export const adminGroups = allAdminGroups.filter(group => group.title === 'Номенклатури');
 export const adminItems = adminGroups.flatMap(g => [...g.items]);
 export function isAdminSection(value: unknown): value is AdminSection { return typeof value === 'string' && adminItems.some(i => i.id === value); }
 
