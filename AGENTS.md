@@ -16,3 +16,4 @@
 - The uploaded storefront's comparison uses its existing selection state and native dialog to avoid a separate, inconsistent product selection.
 - Uploaded storefront buyer validation uses a shared Zod schema exposed before its script loads; buyer details stay in the demo form and are rendered with textContent, not interpolated HTML.
 - Customer account UI is React-owned and portaled into the uploaded storefront header; a single AccountProvider manages identity transitions, and profile reads/writes use authenticated server functions with owner-only RLS to keep personal data private.
+- The public Admin preview is read-only and uses fictional order/customer fixtures and sample products only; it must never query private accounts or mutate ERP data.
