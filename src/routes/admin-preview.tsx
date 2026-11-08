@@ -75,7 +75,7 @@ function AdminPreview() {
     <div className="erp-workspace">
       <header className="erp-header">
         <Button variant="ghost" size="icon" aria-label={collapsed ? 'Покажи менюто' : 'Свий менюто'} title={collapsed ? 'Покажи менюто' : 'Свий менюто'} onClick={() => setCollapsed(v => !v)}>{collapsed ? <Menu /> : <PanelLeftClose />}</Button>
-        <div className="erp-top-groups">{adminGroups.map(g => <Button variant="ghost" key={g.title} className={g.title === group?.title ? 'is-active' : ''} onClick={() => changeSection(g.items[0].id)}>{g.title}<ChevronDown /></Button>)}</div>
+        <div className="erp-top-groups">{adminGroups.map(g => <Button variant="ghost" key={g.title} className={g.title === group?.title ? 'is-active' : ''} onClick={() => { const first = g.items[0]; if (first) changeSection(first.id); }}>{g.title}<ChevronDown /></Button>)}</div>
         <div className="erp-header-actions"><ViewSwitch view="admin" /><span><Globe />BG</span><Button variant="ghost" size="icon" asChild title="Към магазина"><Link to="/" aria-label="Към магазина"><ArrowLeft /></Link></Button></div>
       </header>
       <main className="erp-main">
