@@ -161,3 +161,4 @@ dialog{position:fixed;inset:0;margin:auto;width:min(850px,94vw);max-width:94vw;m
 .buybackitem .visual{width:56px;max-height:90px;overflow:hidden}
 .buybackinfo h3{font-size:20px;margin:0 0 8px}
 @media(max-width:760px){.buyback{grid-template-columns:1fr}}
+.primary .bell{flex:none}button[aria-pressed="true"].primary{filter:saturate(.7)}

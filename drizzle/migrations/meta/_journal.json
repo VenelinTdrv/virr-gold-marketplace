@@ -15,6 +15,13 @@
       "when": 1794138940480,
       "tag": "0001_restrict_profile_trigger_execution",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1794160184387,
+      "tag": "0002_create_stock_alerts",
+      "breakpoints": true
     }
   ]
 }
