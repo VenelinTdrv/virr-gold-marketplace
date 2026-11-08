@@ -1,75 +1,92 @@
-import { createFileRoute, Link } from '@tanstack/react-router';
+import { createFileRoute, Link, useNavigate } from '@tanstack/react-router';
 import { useState } from 'react';
-import { ArrowLeft, ArrowUpRight, LayoutDashboard, Package, ShoppingBag, Users, Search, Eye, X, Database, CircleCheck } from 'lucide-react';
+import { Menu, Search, X, ChevronDown, ChevronRight, Folder, Eye, ArrowLeft, MoreVertical, Globe, PanelLeftClose } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { PRODUCTS, CATEGORIES, fmt } from '@/lib/shop/products';
 import { previewOrders, previewCustomers } from '@/lib/shop/admin-preview';
+import { adminGroups, adminItems, adminTables, isAdminSection, type AdminSection, type PreviewTable } from '@/lib/shop/admin-sections';
 
 export const Route = createFileRoute('/admin-preview')({
+  validateSearch: (search: Record<string, unknown>): { section?: AdminSection } => ({ section: isAdminSection(search.section) ? search.section : undefined }),
   head: () => ({ meta: [
-    { title: 'Admin preview | Virr Gold' },
-    { name: 'description', content: 'Демонстрационен административен преглед на продукти, поръчки и клиенти във Virr Gold.' },
-    { property: 'og:title', content: 'Admin preview | Virr Gold' },
-    { property: 'og:description', content: 'Преглед на административния панел с примерни данни.' },
+    { title: 'Admin panel preview | Virr Gold' },
+    { name: 'description', content: 'Примерен административен панел на Virr Gold по HyperERP: артикули, операции, справки и администрация.' },
+    { property: 'og:title', content: 'Admin panel preview | Virr Gold' },
+    { property: 'og:description', content: 'Административен преглед с примерни данни, без реални промени в HyperERP.' },
     { property: 'og:type', content: 'website' }, { name: 'twitter:card', content: 'summary' }, { name: 'robots', content: 'noindex, nofollow' },
   ] }),
   component: AdminPreview,
 });
 
-const views = [
-  { id: 'overview', title: 'Общ преглед', icon: LayoutDashboard },
-  { id: 'products', title: 'Продукти', icon: Package },
-  { id: 'orders', title: 'Поръчки', icon: ShoppingBag },
-  { id: 'customers', title: 'Клиенти', icon: Users },
-] as const;
-type View = typeof views[number]['id'];
 function AdminPreview() {
-  const [view, setView] = useState<View>('overview');
-  const [search, setSearch] = useState('');
-  const [status, setStatus] = useState('all');
-  const [selectedOrder, setSelectedOrder] = useState<string | null>(null);
-  const order = previewOrders.find(o => o.id === selectedOrder);
-  const matches = (value: string) => value.toLocaleLowerCase('bg').includes(search.trim().toLocaleLowerCase('bg'));
-  const products = PRODUCTS.filter(p => matches(`${p.name} ${p.mint}`) && (status === 'all' || (status === 'available' ? p.stock > 0 : p.stock === 0)));
-  const orders = previewOrders.filter(o => matches(`${o.id} ${o.customer} ${o.product}`) && (status === 'all' || o.status === status));
-  const customers = previewCustomers.filter(c => matches(`${c.id} ${c.name} ${c.type}`));
-  function changeView(next: View) { setView(next); setSearch(''); setStatus('all'); setSelectedOrder(null); }
-  const total = previewOrders.reduce((sum, o) => sum + o.total, 0);
-  function orderTable(rows: typeof previewOrders) {
-    return <div className="admin-table-scroll"><table><thead><tr><th>Поръчка / Клиент</th><th>Продукт</th><th>Сума</th><th>Статус</th><th>Дата</th><th><span className="admin-hidden-label">Детайли</span></th></tr></thead><tbody>{rows.map(o => <tr key={o.id}><td><strong>{o.id}</strong><small>{o.customer}</small></td><td>{o.product}</td><td className="admin-price">{fmt(o.total)}</td><td><span className={`admin-status ${o.status === 'Завършена' ? 'is-positive' : ''}`}>{o.status}</span></td><td>{o.date}</td><td><Button variant="ghost" size="icon" title="Преглед на поръчка" aria-label={`Преглед на ${o.id}`} onClick={() => setSelectedOrder(o.id)}><Eye /></Button></td></tr>)}</tbody></table>{rows.length === 0 && <p className="admin-empty">Няма намерени поръчки.</p>}</div>;
+  const { section = 'products' } = Route.useSearch();
+  const navigate = useNavigate();
+  const [collapsed, setCollapsed] = useState(false);
+  const [closedGroups, setClosedGroups] = useState<string[]>([]);
+  const [name, setName] = useState('');
+  const [code, setCode] = useState('');
+  const [query, setQuery] = useState({ name: '', code: '' });
+  const [category, setCategory] = useState('all');
+  const [selected, setSelected] = useState<string[]>([]);
+  const [detail, setDetail] = useState<{ title: string; values: [string, string][] } | null>(null);
+  const active = adminItems.find(i => i.id === section);
+  const group = adminGroups.find(g => g.items.some(i => i.id === section));
+  const productView = ['products', 'product-stock', 'out-of-stock'].includes(section);
+  const matches = (text: string, value: string) => text.toLocaleLowerCase('bg').includes(value.trim().toLocaleLowerCase('bg'));
+  function changeSection(next: AdminSection) {
+    setName(''); setCode(''); setQuery({ name: '', code: '' }); setCategory('all'); setSelected([]); setDetail(null);
+    void navigate({ to: '/admin-preview', search: { section: next } });
   }
-  return <div className="admin-preview">
-    <aside className="admin-sidebar">
-      <Link to="/" className="admin-brand">VIRR <span>GOLD</span></Link>
-      <span className="admin-caption">ADMIN PREVIEW</span>
-      <nav aria-label="Административен преглед">{views.map(v => <Button key={v.id} variant={view === v.id ? 'secondary' : 'ghost'} aria-pressed={view === v.id} onClick={() => changeView(v.id)}><v.icon />{v.title}</Button>)}</nav>
-      <div className="admin-sidebar-bottom"><Database /><span>Собствена ERP<small>Не е свързана</small></span></div>
-      <Button asChild variant="outline"><Link to="/"><ArrowLeft />Към магазина</Link></Button>
+  let table: PreviewTable;
+  if (['orders','sales','payments'].includes(section)) {
+    table = { columns: ['Номер','Клиент','Артикул','Сума','Статус','Дата'], rows: previewOrders.filter(o => section !== 'sales' || o.status === 'Завършена').map(o => [o.id,o.customer,o.product,fmt(o.total),section === 'payments' ? o.payment : o.status,o.date]) };
+  } else if (section === 'customers') {
+    table = { columns: ['Код','Име','Вид','Поръчки','Обща стойност'], rows: previewCustomers.map(c => [c.id,c.name,c.type,String(c.orders),fmt(c.total)]) };
+  } else if (section === 'categories') {
+    table = { columns: ['Код','Категория','Брой артикули'], rows: CATEGORIES.map(c => [c.id,c.label,String(PRODUCTS.filter(p => p.category === c.id).length)]) };
+  } else table = adminTables[section] ?? { columns: ['Код','Име'], rows: [] };
+  const products = PRODUCTS.filter(p => matches(p.name + ' ' + p.mint,query.name) && matches(p.id,query.code) && (category === 'all' || p.category === category) && (section !== 'out-of-stock' || p.stock === 0));
+  const rows = table.rows.filter(row => matches(row.join(' '),query.name) && matches(row[0] ?? '',query.code));
+  const ids = productView ? products.map(p => p.id) : rows.map(r => r[0] ?? '');
+  function toggle(id: string) { setSelected(current => current.includes(id) ? current.filter(v => v !== id) : [...current,id]); }
+  const allSelected = ids.length > 0 && ids.every(id => selected.includes(id));
+  return <div className={`erp-preview ${collapsed ? 'is-collapsed' : ''}`}>
+    <aside className="erp-sidebar">
+      <div className="erp-brand"><span className="erp-brand-icon">V</span><span>Virr Gold</span></div>
+      <nav aria-label="Административно меню">{adminGroups.map(g => <div className="erp-nav-group" key={g.title}>
+        <Button variant="ghost" className="erp-group-toggle" aria-expanded={!closedGroups.includes(g.title)} title={g.title} onClick={() => setClosedGroups(current => current.includes(g.title) ? current.filter(v => v !== g.title) : [...current,g.title])}><span>{g.title}</span><ChevronDown /></Button>
+        {!closedGroups.includes(g.title) && g.items.map(item => <Button key={item.id} variant="ghost" title={item.title} className={`erp-nav-item ${item.id === section ? 'is-active' : ''}`} aria-current={item.id === section ? 'page' : undefined} onClick={() => changeSection(item.id)}><item.icon /><span>{item.title}</span></Button>)}
+      </div>)}</nav>
+      <div className="erp-sidebar-account"><span className="erp-avatar">VP</span><div><strong>Preview профил</strong><small>Без реални права</small></div></div>
     </aside>
-    <main className="admin-main">
-      <header className="admin-topbar"><span>Virr Gold <span className="text-muted-foreground">/ Администрация</span></span><span className="admin-preview-badge"><Eye />Само преглед</span></header>
-      <div className="admin-content">
-        <div className="admin-title"><div><p className="admin-caption">КОНТРОЛЕН ПАНЕЛ</p><h1>{views.find(v => v.id === view)?.title}</h1></div><Button asChild variant="outline"><Link to="/"><ArrowUpRight />Магазин</Link></Button></div>
-        <div className="admin-notice"><Eye /><p><strong>Демонстрационен режим</strong> · Примерни продукти, поръчки и клиенти. Без реални лични данни и без промени в ERP.</p></div>
-        {view === 'overview' ? <>
-          <div className="admin-metrics">{[
-            { label: 'Стойност на поръчките', value: fmt(total), icon: ShoppingBag, note: '5 примерни поръчки' },
-            { label: 'Продукти', value: PRODUCTS.length, icon: Package, note: 'В демонстрационния каталог' },
-            { label: 'Клиенти', value: previewCustomers.length, icon: Users, note: 'Изцяло примерни профили' },
-            { label: 'Нови поръчки', value: previewOrders.filter(o => o.status === 'Нова').length, icon: CircleCheck, note: 'Очакват потвърждение' },
-          ].map(m => <article key={m.label}><div><span>{m.label}</span><m.icon /></div><strong>{m.value}</strong><small>{m.note}</small></article>)}</div>
-          <section className="admin-section"><div className="admin-section-head"><h2>Последни поръчки</h2><Button variant="ghost" onClick={() => changeView('orders')}>Всички поръчки <ArrowUpRight /></Button></div>{orderTable(previewOrders)}</section>
-          <section className="admin-section"><div className="admin-section-head"><h2>Наличности за внимание</h2><Button variant="ghost" onClick={() => changeView('products')}>Каталог <ArrowUpRight /></Button></div><div className="admin-stock-list">{PRODUCTS.filter(p => p.stock <= 6).map(p => <article key={p.id}><img src={p.image} alt={p.name}/><div><strong>{p.name}</strong><small>{p.mint}</small></div><span className={p.stock ? 'text-primary' : 'text-destructive'}>{p.stock ? `${p.stock} бр.` : 'Изчерпан'}</span></article>)}</div></section>
-        </> : <>
-          <div className="admin-toolbar"><label><Search aria-hidden="true"/><input aria-label="Търсене в админ прегледа" placeholder={view === 'products' ? 'Търси продукт или рафинерия…' : view === 'orders' ? 'Търси поръчка или клиент…' : 'Търси клиент…'} value={search} onChange={e => setSearch(e.target.value)}/></label>
-            {view !== 'customers' && <select aria-label="Статус" value={status} onChange={e => setStatus(e.target.value)}><option value="all">Всички статуси</option>{view === 'products' ? <><option value="available">В наличност</option><option value="out">Изчерпан</option></> : ['Нова','Потвърдена','Изпратена','Завършена'].map(s => <option key={s}>{s}</option>)}</select>}
-            <span>{view === 'products' ? products.length : view === 'orders' ? orders.length : customers.length} резултата</span>
-          </div>
-          {view === 'orders' ? orderTable(orders) : view === 'products' ? <div className="admin-table-scroll"><table><thead><tr><th>Продукт</th><th>Вид / Рафинерия</th><th>Цена продава</th><th>Цена купува</th><th>Наличност</th></tr></thead><tbody>{products.map(p => <tr key={p.id}><td><div className="admin-product"><img src={p.image} alt={p.name}/><div><strong>{p.name}</strong><small>{p.id}</small></div></div></td><td>{CATEGORIES.find(c => c.id === p.category)?.label}<small>{p.mint}</small></td><td className="admin-price">{fmt(p.price)}</td><td>{fmt(p.buyback)}</td><td><span className={`admin-status ${p.stock ? 'is-positive' : 'is-out'}`}>{p.stock ? `В наличност · ${p.stock} бр.` : 'Изчерпан'}</span></td></tr>)}</tbody></table>{!products.length && <p className="admin-empty">Няма намерени продукти.</p>}</div> : <div className="admin-table-scroll"><table><thead><tr><th>Клиент</th><th>Вид</th><th>Поръчки</th><th>Обща стойност</th></tr></thead><tbody>{customers.map(c => <tr key={c.id}><td><strong>{c.name}</strong><small>{c.id}</small></td><td>{c.type}</td><td>{c.orders}</td><td className="admin-price">{fmt(c.total)}</td></tr>)}</tbody></table>{!customers.length && <p className="admin-empty">Няма намерени клиенти.</p>}</div>}
-        </>}
-        {order && <section className="admin-order-detail" aria-label="Детайли на поръчката"><div className="admin-section-head"><h2>{order.id}</h2><Button variant="ghost" size="icon" aria-label="Затвори детайли" onClick={() => setSelectedOrder(null)}><X /></Button></div><dl>{[['Клиент',order.customer],['Продукт',order.product],['Обща сума',fmt(order.total)],['Плащане',order.payment],['Статус',order.status],['Дата',order.date]].map(([label,value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl></section>}
-        <footer className="admin-footer">VIRR GOLD <span>Демонстрационен административен преглед</span></footer>
-      </div>
-    </main>
+    <div className="erp-workspace">
+      <header className="erp-header">
+        <Button variant="ghost" size="icon" aria-label={collapsed ? 'Покажи менюто' : 'Свий менюто'} title={collapsed ? 'Покажи менюто' : 'Свий менюто'} onClick={() => setCollapsed(v => !v)}>{collapsed ? <Menu /> : <PanelLeftClose />}</Button>
+        <div className="erp-top-groups">{adminGroups.map(g => <Button variant="ghost" key={g.title} className={g.title === group?.title ? 'is-active' : ''} onClick={() => changeSection(g.items[0].id)}>{g.title}<ChevronDown /></Button>)}</div>
+        <div className="erp-header-actions"><span><Globe />BG</span><Button variant="ghost" size="icon" asChild title="Към магазина"><Link to="/" aria-label="Към магазина"><ArrowLeft /></Link></Button></div>
+      </header>
+      <main className="erp-main">
+        <div className="erp-page-title"><h1>{active?.title}</h1><span className="erp-preview-label"><Eye />Preview</span></div>
+        <div className="erp-mode-note">Примерни данни · HyperERP не е свързан · Без реални промени</div>
+        <form className="erp-search" onSubmit={e => { e.preventDefault(); setQuery({ name, code }); setSelected([]); }}>
+          <label><Search /><input aria-label="Име" placeholder="Име" value={name} maxLength={100} onChange={e => setName(e.target.value)}/></label>
+          <input aria-label="Код" placeholder="Код" value={code} maxLength={100} onChange={e => setCode(e.target.value)}/>
+          <Button type="submit" variant="outline" size="icon" aria-label="Търсене" title="Търсене"><Search /></Button>
+          <Button type="button" variant="ghost" size="icon" aria-label="Изчисти търсенето" title="Изчисти търсенето" onClick={() => { setName('');setCode('');setQuery({name:'',code:''});setSelected([]); }}><X /></Button>
+        </form>
+        <div className={`erp-list-layout ${productView ? 'with-categories' : ''}`}>
+          {productView && <aside className="erp-categories"><h2>Категории</h2><Button variant="ghost" className={category === 'all' ? 'is-active' : ''} onClick={() => {setCategory('all');setSelected([]);}}><Folder />Всички категории</Button>{CATEGORIES.map(c => <Button variant="ghost" key={c.id} className={category === c.id ? 'is-active' : ''} onClick={() => {setCategory(c.id);setSelected([]);}}><Folder />{c.label}</Button>)}</aside>}
+          <section className="erp-table-panel" aria-label={active?.title}>
+            <div className="erp-list-heading"><h2>Списък {productView ? 'с артикули' : 'със записи'}</h2><span>{ids.length}</span>{selected.length > 0 && <div className="erp-selection">Избрани: {selected.length}<Button variant="ghost" size="sm" onClick={() => setSelected([])}>Изчисти</Button></div>}</div>
+            <div className="erp-table-scroll"><table><thead><tr><th><input type="checkbox" aria-label="Избери всички" checked={allSelected} onChange={() => setSelected(allSelected ? [] : ids)}/></th>{(productView ? ['Код','Име','Категория','Наличност','Цена продава','Цена купува','Рафинерия'] : table.columns).map(col => <th key={col}>{col}</th>)}<th>Действия</th></tr></thead>
+              <tbody>{productView ? products.map(p => <tr key={p.id} className={selected.includes(p.id) ? 'is-selected' : ''}><td><input type="checkbox" aria-label={`Избери ${p.name}`} checked={selected.includes(p.id)} onChange={() => toggle(p.id)}/></td><td>{p.id}</td><td><div className="erp-product"><img src={p.image} alt=""/><strong>{p.name}</strong></div></td><td>{CATEGORIES.find(c => c.id === p.category)?.label}</td><td className={p.stock ? 'erp-available' : 'erp-unavailable'}>{p.stock ? `${p.stock} бр.` : 'Изчерпан'}</td><td>{fmt(p.price)}</td><td>{fmt(p.buyback)}</td><td>{p.mint}</td><td><Button size="icon" variant="ghost" title="Преглед на артикул" aria-label={`Преглед на ${p.name}`} onClick={() => setDetail({ title:p.name, values:[['Код',p.id],['Рафинерия',p.mint],['Грамаж',`${p.weightG} г (${(p.weightG/31.1035).toLocaleString('bg-BG',{maximumFractionDigits:3})} oz)`],['Проба',p.fineness],['Цена продава',fmt(p.price)],['Цена купува',fmt(p.buyback)],['Наличност',`${p.stock} бр.`]] })}><MoreVertical /></Button></td></tr>) : rows.map(row => <tr key={row[0]} className={selected.includes(row[0] ?? '') ? 'is-selected' : ''}><td><input type="checkbox" aria-label={`Избери ${row[0]}`} checked={selected.includes(row[0] ?? '')} onChange={() => toggle(row[0] ?? '')}/></td>{row.map((cell,i) => <td key={i}>{cell}</td>)}<td><Button variant="ghost" size="icon" title="Преглед на запис" aria-label={`Преглед на ${row[0]}`} onClick={() => setDetail({title:row[0] ?? '',values:table.columns.map((col,i) => [col,row[i] ?? ''])})}><MoreVertical /></Button></td></tr>)}</tbody></table></div>
+            {!ids.length && <p className="erp-empty">Няма намерени записи.</p>}
+            <div className="erp-table-footer">Показани {ids.length} от {ids.length}<span>Примерен списък</span></div>
+          </section>
+        </div>
+        {detail && <section className="erp-detail" aria-label="Детайли"><div><h2>{detail.title}</h2><Button variant="ghost" size="icon" aria-label="Затвори детайли" onClick={() => setDetail(null)}><X /></Button></div><dl>{detail.values.map(([label,value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl></section>}
+        <footer className="erp-footer"><span>Virr Gold / {group?.title} <ChevronRight /> {active?.title}</span><span>Admin preview</span></footer>
+      </main>
+    </div>
   </div>;
 }
