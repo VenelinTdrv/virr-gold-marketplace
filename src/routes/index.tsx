@@ -1,5 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { memo, useEffect, useState } from "react";
+import { memo, useCallback, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { goldMarkup } from "@/lib/shop/goldMarkup";
 import { validateBuyer } from "@/lib/shop/buyer";
@@ -10,6 +10,7 @@ import { LayoutDashboard } from "lucide-react";
 import { ViewSwitch } from "@/components/shop/ViewSwitch";
 import { storefrontProducts, type StorefrontProduct } from "@/lib/shop/storefront-products";
 import { ProductDescriptions } from '@/components/shop/ProductDescriptions';
+import { StockAlertBridge } from '@/components/shop/StockAlertBridge';
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -34,6 +35,7 @@ export function GoldShop({ product }: { product?: StorefrontProduct | undefined 
   const [adminHost, setAdminHost] = useState<HTMLElement | null>(null);
   const [descriptionHost, setDescriptionHost] = useState<HTMLElement | null>(null);
   const [accountOpen, setAccountOpen] = useState(false);
+  const openAccount = useCallback(() => setAccountOpen(true), []);
   useEffect(() => {
     setDescriptionHost(document.getElementById('productdescriptions'));
     const footer = document.querySelector('footer');
@@ -79,6 +81,7 @@ export function GoldShop({ product }: { product?: StorefrontProduct | undefined 
     return () => { document.removeEventListener('click', onProductClick); };
   }, []);
   return <><UploadedStorefront product={product} />
+    <StockAlertBridge onSignInRequired={openAccount} />
     {product && descriptionHost && createPortal(<ProductDescriptions product={product} />, descriptionHost)}
     {accountHost && createPortal(<><ViewSwitch view="user" /><AccountEntry onClick={() => setAccountOpen(true)} /></>, accountHost)}
     {adminHost && createPortal(<Button asChild variant="outline" className="admin-store-entry"><Link to="/admin-preview"><LayoutDashboard />Admin preview</Link></Button>, adminHost)}
