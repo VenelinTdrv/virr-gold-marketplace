@@ -9,6 +9,6 @@
 - [x] Test both buyer flows on desktop and mobile.
 
 # Customer accounts
-- [ ] Add registration, sign-in, sign-out and password recovery.
-- [ ] Store and edit private name, phone and address.
-- [ ] Verify signed-in profile saving and storefront entry on desktop and mobile.
+- [x] Add registration, sign-in, sign-out and password recovery.
+- [x] Store and edit private name, phone and address.
+- [x] Verify signed-in profile saving and storefront entry on desktop and mobile.
