@@ -364,6 +364,11 @@
 .erp-form-grid textarea { min-height:80px; resize:vertical; }
 .erp-form-grid label:has(textarea[aria-label="Описание"]) { grid-column:1 / -1; }
 .erp-form-grid textarea[aria-label="Описание"] { min-height:180px; }
+.erp-description-editor { margin-top:24px; }
+.erp-description-tabs { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); border-bottom:2px solid var(--border); margin-bottom:16px; }
+.erp-preview .erp-description-tabs button { border-radius:0; height:auto; min-height:48px; white-space:normal; padding:8px 4px; font-size:12px; color:var(--muted-foreground); border-bottom:3px solid transparent; }
+.erp-preview .erp-description-tabs button[aria-selected="true"] { color:var(--primary); border-bottom-color:var(--primary); }
+.erp-description-editor textarea { display:block; width:100%; min-height:180px; resize:vertical; background:var(--card); color:var(--foreground); border:1px solid var(--border); border-radius:4px; padding:12px; font:inherit; }
 @media(max-width:650px) { .erp-form-grid { grid-template-columns:1fr; } .erp-dialog { padding:18px; } .erp-list-heading { flex-wrap:wrap; } }
 .erp-preview .erp-footer { display:flex; justify-content:space-between; padding:24px 0 0; margin-top:24px; border:0; background:transparent; color:var(--muted-foreground); font-size:10px; }
 .erp-footer > span { display:flex; gap:4px; align-items:center; }
