@@ -12,3 +12,7 @@
 - [x] Add registration, sign-in, sign-out and password recovery.
 - [x] Store and edit private name, phone and address.
 - [x] Verify signed-in profile saving and storefront entry on desktop and mobile.
+
+# Admin preview
+- [ ] Create a read-only demonstration panel for products, orders and customers.
+- [ ] Add a storefront entry and verify navigation, search and mobile layout.
