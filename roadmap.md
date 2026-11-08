@@ -40,3 +40,7 @@
 # Settings navigation
 - [x] Move the six CMS sections from nomenclatures into a separate collapsible Настройки menu.
 - [x] Verify navigation and retained demo screens.
+
+# Storefront product pages
+- [x] Open every catalog product on its own address instead of a product dialog.
+- [x] Preserve product details, storefront design and the existing cart; verify direct opening and refresh.

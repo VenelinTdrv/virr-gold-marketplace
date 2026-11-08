@@ -23,3 +23,4 @@
 - The shared User/Admin view switch only navigates between the storefront and isolated admin demo; it never changes account roles or grants privileges.
 
 - Conditional demo fields share visibility rules across forms, validation, saving and details; legacy browser records are upgraded to preserve existing data.
+- Uploaded storefront product pages use /gold/$id and shared storefront product data with the original cart script so catalog and detail prices, IDs and cart quantities stay consistent; legacy /product/$id routes remain unchanged.
