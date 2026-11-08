@@ -98,7 +98,7 @@ function AdminPreview() {
       <main className="erp-main">
         <div className="erp-page-title"><h1>{active?.title}</h1><span className="erp-preview-label"><Eye />Preview</span></div>
         <div className="erp-mode-note">Демо режим · Промените са само в този браузър · Магазинът и HyperERP не се променят</div>
-        <div className="erp-crud-toolbar"><Button disabled={!ready} onClick={openNew}><Plus />Нов запис</Button><Button variant="outline" onClick={() => setResetting(true)} disabled={!ready}><RotateCcw />Възстанови примерите</Button></div>
+        <div className="erp-crud-toolbar"><Button disabled={!ready} onClick={openNew}><Plus />{productView ? 'Нов артикул' : 'Нов запис'}</Button><Button variant="outline" onClick={() => setResetting(true)} disabled={!ready}><RotateCcw />Възстанови примерите</Button></div>
         {notice && <p className="erp-notice" role="status">{notice}</p>}
         <form className="erp-search" onSubmit={e => { e.preventDefault(); setQuery({ name, code }); setSelected([]); }}>
           <label><Search /><input aria-label="Име" placeholder="Име" value={name} maxLength={100} onChange={e => setName(e.target.value)}/></label>
@@ -117,7 +117,7 @@ function AdminPreview() {
           </section>
         </div>
         {detail && <section className="erp-detail" aria-label="Детайли"><div><h2>{detail.title}</h2><Button variant="ghost" size="icon" aria-label="Затвори детайли" onClick={() => setDetail(null)}><X /></Button></div><dl>{detail.values.map(([label,value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl></section>}
-        {editor && <AdminDemoDialog key={`${section}-${editor.record?.key ?? 'new'}`} title={editor.record ? 'Редактиране на запис' : 'Нов запис'} fields={fields} record={editor.record} rows={sectionRows} onClose={() => setEditor(null)} onSave={values => {
+        {editor && <AdminDemoDialog key={`${section}-${editor.record?.key ?? 'new'}`} title={editor.record ? (productView ? 'Редактиране на артикул' : 'Редактиране на запис') : (productView ? 'Нов артикул' : 'Нов запис')} fields={fields} record={editor.record} rows={sectionRows} onClose={() => setEditor(null)} onSave={values => {
           let next = saveDemoRecord(data, section, values, editor.record?.key ?? crypto.randomUUID());
           if (section === 'categories' && editor.record && values[1]?.trim() !== editor.record.values[1]) next = { ...next, products: (next.products ?? []).map(p => p.values[2] === editor.record?.values[1] ? { ...p, values: p.values.map((v,i) => i === 2 ? values[1]?.trim() ?? v : v) } : p) };
           commit(next, editor.record ? 'Записът е редактиран.' : 'Записът е добавен.'); setEditor(null); setSelected([]);
