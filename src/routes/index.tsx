@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { goldMarkup } from "@/lib/shop/goldMarkup";
 import { validateBuyer } from "@/lib/shop/buyer";
@@ -20,6 +20,8 @@ export const Route = createFileRoute("/")({
   }),
   component: GoldShop,
 });
+
+const UploadedStorefront = memo(() => <div dangerouslySetInnerHTML={{ __html: goldMarkup }} />);
 
 function GoldShop() {
   const [accountHost, setAccountHost] = useState<HTMLElement | null>(null);
@@ -44,7 +46,7 @@ function GoldShop() {
     s.src = "/gold/app.js";
     document.body.appendChild(s);
   }, []);
-  return <><div dangerouslySetInnerHTML={{ __html: goldMarkup }} />
+  return <><UploadedStorefront />
     {accountHost && createPortal(<AccountEntry onClick={() => setAccountOpen(true)} />, accountHost)}
     <Dialog open={accountOpen} onOpenChange={setAccountOpen}>
       <DialogContent className="account-dialog" aria-describedby={undefined}>
