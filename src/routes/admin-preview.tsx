@@ -1,12 +1,12 @@
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
-import { Menu, Search, X, ChevronDown, ChevronRight, Folder, Eye, ArrowLeft, MoreVertical, Globe, PanelLeftClose } from 'lucide-react';
+import { Menu, Search, X, ChevronDown, ChevronRight, Folder, Eye, ArrowLeft, Pencil, Trash2, Plus, RotateCcw, Globe, PanelLeftClose } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ViewSwitch } from '@/components/shop/ViewSwitch';
-import { CATEGORIES, fmt } from '@/lib/shop/products';
-import { adminProducts as PRODUCTS } from '@/lib/shop/admin-products';
-import { previewOrders, previewCustomers } from '@/lib/shop/admin-preview';
-import { adminGroups, adminItems, adminTables, isAdminSection, type AdminSection, type PreviewTable } from '@/lib/shop/admin-sections';
+import { fmt } from '@/lib/shop/products';
+import { AdminDemoDialog } from '@/components/shop/AdminDemoDialog';
+import { DEMO_STORAGE_KEY, initialDemoData, restoreDemoData, fieldsFor, saveDemoRecord, deleteDemoRecords, type DemoData, type DemoRecord } from '@/lib/shop/admin-demo';
+import { adminGroups, adminItems, isAdminSection, type AdminSection } from '@/lib/shop/admin-sections';
 
 export const Route = createFileRoute('/admin-preview')({
   validateSearch: (search: Record<string, unknown>): { section?: AdminSection } => {
@@ -44,23 +44,39 @@ function AdminPreview() {
   const [detail, setDetail] = useState<{ title: string; values: [string, string][] } | null>(null);
   const active = adminItems.find(i => i.id === section);
   const group = adminGroups.find(g => g.items.some(i => i.id === section));
-  const productView = ['products', 'product-stock', 'out-of-stock'].includes(section);
+  const productView = section === 'products';
+  const [data, setData] = useState<DemoData>(initialDemoData);
+  const [ready, setReady] = useState(false);
+  const [notice, setNotice] = useState('');
+  const [editor, setEditor] = useState<{ record?: DemoRecord } | null>(null);
+  const [deleting, setDeleting] = useState<string[] | null>(null);
+  const [resetting, setResetting] = useState(false);
+  useEffect(() => {
+    try { const raw = localStorage.getItem(DEMO_STORAGE_KEY); if (raw) { const saved = restoreDemoData(raw); if (saved) setData(saved); else setNotice('Невалидни демо данни. Заредени са примерите.'); } }
+    catch { setNotice('Запазването в този браузър не е достъпно.'); }
+    setReady(true);
+  }, []);
+  function commit(next: DemoData, message: string) {
+    setData(next); setNotice(message);
+    try { localStorage.setItem(DEMO_STORAGE_KEY, JSON.stringify(next)); }
+    catch { setNotice(message + ' Промените са само за текущото посещение.'); }
+  }
+  const fields = fieldsFor(section, data);
+  const categories = data.categories ?? [];
   const matches = (text: string, value: string) => text.toLocaleLowerCase('bg').includes(value.trim().toLocaleLowerCase('bg'));
   function changeSection(next: AdminSection) {
-    setName(''); setCode(''); setQuery({ name: '', code: '' }); setCategory('all'); setSelected([]); setDetail(null);
+    setName(''); setCode(''); setQuery({ name: '', code: '' }); setCategory('all'); setSelected([]); setDetail(null); setEditor(null); setDeleting(null); setNotice('');
     void navigate({ to: '/admin-preview', search: { section: next } });
   }
-  let table: PreviewTable;
-  if (['orders','sales','payments'].includes(section)) {
-    table = { columns: ['Номер','Клиент','Артикул','Сума','Статус','Дата'], rows: previewOrders.filter(o => section !== 'sales' || o.status === 'Завършена').map(o => [o.id,o.customer,o.product,fmt(o.total),section === 'payments' ? o.payment : o.status,o.date]) };
-  } else if (section === 'customers') {
-    table = { columns: ['Код','Име','Вид','Поръчки','Обща стойност'], rows: previewCustomers.map(c => [c.id,c.name,c.type,String(c.orders),fmt(c.total)]) };
-  } else if (section === 'categories') {
-    table = { columns: ['Код','Категория','Брой артикули'], rows: CATEGORIES.map(c => [c.id,c.label,String(PRODUCTS.filter(p => p.category === c.id).length)]) };
-  } else table = adminTables[section] ?? { columns: ['Код','Име'], rows: [] };
-  const products = PRODUCTS.filter(p => matches(p.name + ' ' + p.mint,query.name) && matches(p.id,query.code) && (category === 'all' || p.category === category) && (section !== 'out-of-stock' || !p.stock));
-  const rows = table.rows.filter(row => matches(row.join(' '),query.name) && matches(row[0] ?? '',query.code));
-  const ids = productView ? products.map(p => p.id) : rows.map(r => r[0] ?? '');
+  const sectionRows = data[section] ?? [];
+  const rows = sectionRows.filter(row => matches(row.values.join(' '), query.name) && matches(row.values[0] ?? '', query.code) && (!productView || category === 'all' || row.values[2] === category));
+  const ids = rows.map(r => r.key);
+  function viewRecord(record: DemoRecord) {
+    setDetail({ title: record.values[1] ?? record.values[0] ?? '', values: fields.map((field, i): [string, string] => [field.label, record.values[i] || '—']) });
+  }
+  function openNew() {
+    setName(''); setCode(''); setQuery({ name: '', code: '' }); setCategory('all'); setDetail(null); setEditor({});
+  }
   function toggle(id: string) { setSelected(current => current.includes(id) ? current.filter(v => v !== id) : [...current,id]); }
   const allSelected = ids.length > 0 && ids.every(id => selected.includes(id));
   return <div className={`erp-preview ${collapsed ? 'is-collapsed' : ''}`}>
@@ -80,7 +96,9 @@ function AdminPreview() {
       </header>
       <main className="erp-main">
         <div className="erp-page-title"><h1>{active?.title}</h1><span className="erp-preview-label"><Eye />Preview</span></div>
-        <div className="erp-mode-note">Примерни данни · HyperERP не е свързан · Без реални промени</div>
+        <div className="erp-mode-note">Демо режим · Промените са само в този браузър · Магазинът и HyperERP не се променят</div>
+        <div className="erp-crud-toolbar"><Button disabled={!ready} onClick={openNew}><Plus />Нов запис</Button><Button variant="outline" onClick={() => setResetting(true)} disabled={!ready}><RotateCcw />Възстанови примерите</Button></div>
+        {notice && <p className="erp-notice" role="status">{notice}</p>}
         <form className="erp-search" onSubmit={e => { e.preventDefault(); setQuery({ name, code }); setSelected([]); }}>
           <label><Search /><input aria-label="Име" placeholder="Име" value={name} maxLength={100} onChange={e => setName(e.target.value)}/></label>
           <input aria-label="Код" placeholder="Код" value={code} maxLength={100} onChange={e => setCode(e.target.value)}/>
@@ -88,16 +106,26 @@ function AdminPreview() {
           <Button type="button" variant="ghost" size="icon" aria-label="Изчисти търсенето" title="Изчисти търсенето" onClick={() => { setName('');setCode('');setQuery({name:'',code:''});setSelected([]); }}><X /></Button>
         </form>
         <div className={`erp-list-layout ${productView ? 'with-categories' : ''}`}>
-          {productView && <aside className="erp-categories"><h2>Категории</h2><Button variant="ghost" className={category === 'all' ? 'is-active' : ''} onClick={() => {setCategory('all');setSelected([]);}}><Folder />Всички категории</Button>{CATEGORIES.map(c => <Button variant="ghost" key={c.id} className={category === c.id ? 'is-active' : ''} onClick={() => {setCategory(c.id);setSelected([]);}}><Folder />{c.label}</Button>)}</aside>}
+          {productView && <aside className="erp-categories"><h2>Категории</h2><Button variant="ghost" className={category === 'all' ? 'is-active' : ''} onClick={() => {setCategory('all');setSelected([]);}}><Folder />Всички категории</Button>{categories.map(c => <Button variant="ghost" key={c.key} className={category === c.values[1] ? 'is-active' : ''} onClick={() => {setCategory(c.values[1] ?? 'all');setSelected([]);}}><Folder />{c.values[1]}</Button>)}</aside>}
           <section className="erp-table-panel" aria-label={active?.title}>
-            <div className="erp-list-heading"><h2>Списък {productView ? 'с артикули' : 'със записи'}</h2><span>{ids.length}</span>{selected.length > 0 && <div className="erp-selection">Избрани: {selected.length}<Button variant="ghost" size="sm" onClick={() => setSelected([])}>Изчисти</Button></div>}</div>
-            <div className="erp-table-scroll"><table><thead><tr><th><input type="checkbox" aria-label="Избери всички" checked={allSelected} onChange={() => setSelected(allSelected ? [] : ids)}/></th>{(productView ? ['Код','Име','Категория','Наличност','Цена продава','Цена купува','Рафинерия'] : table.columns).map(col => <th key={col}>{col}</th>)}<th>Действия</th></tr></thead>
-              <tbody>{productView ? products.map(p => <tr key={p.id} className={selected.includes(p.id) ? 'is-selected' : ''}><td><input type="checkbox" aria-label={`Избери ${p.name}`} checked={selected.includes(p.id)} onChange={() => toggle(p.id)}/></td><td>{p.id}</td><td><div className="erp-product"><img src={p.image} alt=""/><strong>{p.name}</strong></div></td><td>{CATEGORIES.find(c => c.id === p.category)?.label}</td><td className={p.stock ? 'erp-available' : 'erp-unavailable'}>{p.stock ? 'В наличност' : 'Изчерпан'}</td><td>{p.price === null ? '—' : fmt(p.price)}</td><td>{fmt(p.buyback)}</td><td>{p.mint}</td><td><Button size="icon" variant="ghost" title="Преглед на артикул" aria-label={`Преглед на ${p.name}`} onClick={() => setDetail({ title:p.name, values:[['Код',p.id],['Рафинерия',p.mint],['Грамаж',`${p.weightG} г (${(p.weightG/31.1035).toLocaleString('bg-BG',{maximumFractionDigits:3})} oz)`],['Проба',p.fineness],['Цена продава',p.price === null ? '—' : fmt(p.price)],['Цена купува',fmt(p.buyback)],['Наличност',p.stock ? 'В наличност' : 'Изчерпан']] })}><MoreVertical /></Button></td></tr>) : rows.map(row => <tr key={row[0]} className={selected.includes(row[0] ?? '') ? 'is-selected' : ''}><td><input type="checkbox" aria-label={`Избери ${row[0]}`} checked={selected.includes(row[0] ?? '')} onChange={() => toggle(row[0] ?? '')}/></td>{row.map((cell,i) => <td key={i}>{cell}</td>)}<td><Button variant="ghost" size="icon" title="Преглед на запис" aria-label={`Преглед на ${row[0]}`} onClick={() => setDetail({title:row[0] ?? '',values:table.columns.map((col,i) => [col,row[i] ?? ''])})}><MoreVertical /></Button></td></tr>)}</tbody></table></div>
+            <div className="erp-list-heading"><h2>Списък {productView ? 'с артикули' : 'със записи'}</h2><span>{ids.length}</span>{selected.length > 0 && <div className="erp-selection">Избрани: {selected.length}<Button variant="ghost" size="sm" onClick={() => setSelected([])}>Изчисти</Button><Button variant="ghost" size="icon" className="erp-danger" aria-label="Изтрий избраните" title="Изтрий избраните" onClick={() => setDeleting(selected)}><Trash2 /></Button></div>}</div>
+            <div className="erp-table-scroll"><table><thead><tr><th><input type="checkbox" aria-label="Избери всички" checked={allSelected} onChange={() => setSelected(allSelected ? [] : ids)}/></th>{fields.slice(0, productView ? 7 : fields.length).map(field => <th key={field.label}>{field.label}</th>)}{section === 'categories' && <th>Брой артикули</th>}<th>Действия</th></tr></thead>
+              <tbody>{rows.map(row => <tr key={row.key} className={selected.includes(row.key) ? 'is-selected' : ''}><td><input type="checkbox" aria-label={`Избери ${row.values[0]}`} checked={selected.includes(row.key)} onChange={() => toggle(row.key)}/></td>{row.values.slice(0, productView ? 7 : fields.length).map((cell,i) => <td key={i} className={productView && i === 3 ? (cell === 'В наличност' ? 'erp-available' : 'erp-unavailable') : undefined}>{productView && (i === 4 || i === 5) ? (cell ? fmt(Number(cell)) : '—') : cell || '—'}</td>)}{section === 'categories' && <td>{(data.products ?? []).filter(p => p.values[2] === row.values[1]).length}</td>}<td><div className="erp-row-actions"><Button variant="ghost" size="icon" title="Преглед" aria-label={`Преглед на ${row.values[0]}`} onClick={() => viewRecord(row)}><Eye /></Button><Button variant="ghost" size="icon" title="Редактиране" aria-label={`Редактирай ${row.values[0]}`} onClick={() => { setDetail(null); setEditor({ record: row }); }}><Pencil /></Button><Button variant="ghost" size="icon" className="erp-danger" title="Изтриване" aria-label={`Изтрий ${row.values[0]}`} onClick={() => setDeleting([row.key])}><Trash2 /></Button></div></td></tr>)}</tbody></table></div>
             {!ids.length && <p className="erp-empty">Няма намерени записи.</p>}
-            <div className="erp-table-footer">Показани {ids.length} от {ids.length}<span>Примерен списък</span></div>
+            <div className="erp-table-footer">Показани {ids.length} от {sectionRows.length}<span>Примерен списък</span></div>
           </section>
         </div>
         {detail && <section className="erp-detail" aria-label="Детайли"><div><h2>{detail.title}</h2><Button variant="ghost" size="icon" aria-label="Затвори детайли" onClick={() => setDetail(null)}><X /></Button></div><dl>{detail.values.map(([label,value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl></section>}
+        {editor && <AdminDemoDialog key={`${section}-${editor.record?.key ?? 'new'}`} title={editor.record ? 'Редактиране на запис' : 'Нов запис'} fields={fields} record={editor.record} rows={sectionRows} onClose={() => setEditor(null)} onSave={values => {
+          let next = saveDemoRecord(data, section, values, editor.record?.key ?? crypto.randomUUID());
+          if (section === 'categories' && editor.record && values[1]?.trim() !== editor.record.values[1]) next = { ...next, products: (next.products ?? []).map(p => p.values[2] === editor.record?.values[1] ? { ...p, values: p.values.map((v,i) => i === 2 ? values[1]?.trim() ?? v : v) } : p) };
+          commit(next, editor.record ? 'Записът е редактиран.' : 'Записът е добавен.'); setEditor(null); setSelected([]);
+        }} />}
+        {deleting && <AdminDemoDialog title="Изтриване на записи" confirm={`Да изтрием ли ${deleting.length} демо запис(а)?`} onClose={() => setDeleting(null)} onConfirm={() => {
+          if (section === 'categories' && sectionRows.some(r => deleting.includes(r.key) && (data.products ?? []).some(p => p.values[2] === r.values[1]))) { setNotice('Категорията съдържа артикули. Преместете или изтрийте артикулите първо.'); setDeleting(null); return; }
+          commit(deleteDemoRecords(data, section, deleting), 'Записите са изтрити.'); setDeleting(null); setSelected([]); setDetail(null);
+        }} />}
+        {resetting && <AdminDemoDialog title="Възстановяване на примерите" confirm="Да заменим ли всички демо промени във всички менюта с първоначалните примери?" onClose={() => setResetting(false)} onConfirm={() => { commit(initialDemoData(), 'Примерите са възстановени.'); setResetting(false); setSelected([]); setDetail(null); setCategory('all'); }} />}
         <footer className="erp-footer"><span>Virr Gold / {group?.title} <ChevronRight /> {active?.title}</span><span>Admin preview</span></footer>
       </main>
     </div>
