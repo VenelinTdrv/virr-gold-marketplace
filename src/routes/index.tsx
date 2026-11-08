@@ -56,8 +56,12 @@ export function GoldShop({ product }: { product?: StorefrontProduct | undefined 
     w.goldNavigateProduct = id => { void navigate({ to: '/gold/$id', params: { id } }); };
     const onProductClick = (event: MouseEvent) => {
       if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey || event.button !== 0) return;
-      const link = event.target instanceof Element ? event.target.closest<HTMLAnchorElement>('a[data-product-id]') : null;
-      const id = link?.dataset['productId'];
+      if (!(event.target instanceof Element)) return;
+      const link = event.target.closest<HTMLAnchorElement>('a[data-product-id]');
+      // Whole card navigates, except clicks on its interactive controls (cart, favorite, compare).
+      const card = !link && !event.target.closest('button, input, select, label, dialog')
+        ? event.target.closest<HTMLElement>('article.card[data-product-id]') : null;
+      const id = link?.dataset['productId'] ?? card?.dataset['productId'];
       if (!id) return;
       event.preventDefault();
       w.goldNavigateProduct?.(id);
