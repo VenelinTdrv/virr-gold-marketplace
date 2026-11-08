@@ -23,4 +23,4 @@
 - [x] Verify filters, selection, navigation and mobile layout without live ERP calls.
 
 # Consistent light admin design
-- [ ] Isolate all admin controls from storefront colors and verify entry from the shop on desktop and mobile.
+- [x] Isolate all admin controls from storefront colors and verify entry from the shop on desktop and mobile.
