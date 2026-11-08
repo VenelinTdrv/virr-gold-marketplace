@@ -426,3 +426,231 @@
 .gold-description-copy { white-space:pre-wrap; overflow-wrap:anywhere; line-height:1.85; max-width:900px; }
 @media(max-width:650px) { .gold-description-tabs { grid-template-columns:repeat(2,minmax(0,1fr)); } .gold-description-tabs button { font-size:12px; } }
 @media(max-width:700px) { .gold-product-page h1 { font-size:32px; } .gold-product-page .productdetail { gap:24px; } .gold-product-page .productdetail .visual { height:auto; max-height:350px; } }
+
+/* ===== P2P инвестиции страница (Virr зелена визия) ===== */
+.p2p {
+  --p2p-bg: oklch(0.96 0.02 130);
+  --p2p-green: oklch(0.62 0.17 135);
+  --p2p-green-dark: oklch(0.55 0.15 135);
+  --p2p-deep: oklch(0.28 0.05 140);
+  --p2p-muted: oklch(0.45 0.04 135);
+  background: var(--p2p-bg);
+  color: var(--p2p-deep);
+  min-height: 100vh;
+  font-family: "Manrope", sans-serif;
+}
+.p2p a { text-decoration: none; color: inherit; }
+
+.p2p-header { background: var(--p2p-bg); }
+.p2p-header-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  padding: 18px 24px;
+  flex-wrap: wrap;
+}
+.p2p-logo {
+  display: flex;
+  flex-direction: column;
+  font-size: 34px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: var(--p2p-green-dark);
+  line-height: 1;
+}
+.p2p-logo small {
+  font-size: 9px;
+  letter-spacing: 0.32em;
+  font-weight: 600;
+  color: var(--p2p-muted);
+  margin-top: 6px;
+}
+.p2p-badges { display: flex; gap: 10px; }
+.p2p-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--p2p-deep);
+  color: var(--p2p-bg);
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.1;
+}
+.p2p-badge small { display: block; font-size: 8px; font-weight: 400; opacity: 0.8; }
+.p2p-nav { display: flex; align-items: center; gap: 22px; flex-wrap: wrap; }
+.p2p-nav a {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--p2p-deep);
+}
+.p2p-nav a:hover { color: var(--p2p-green-dark); }
+.p2p-nav .p2p-nav-gold {
+  color: var(--p2p-green-dark);
+  border-bottom: 2px solid var(--p2p-green);
+  padding-bottom: 2px;
+}
+.p2p-actions { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+.p2p-login {
+  border: 1.5px solid var(--p2p-green-dark);
+  color: var(--p2p-deep);
+  border-radius: 999px;
+  padding: 9px 26px;
+  font-size: 14px;
+  font-weight: 700;
+}
+.p2p-register {
+  background: var(--p2p-green);
+  color: #fff;
+  border-radius: 999px;
+  padding: 10px 26px;
+  font-size: 14px;
+  font-weight: 700;
+}
+.p2p-register:hover { background: var(--p2p-green-dark); }
+.p2p-lang {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: none;
+  border: 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--p2p-deep);
+  cursor: pointer;
+}
+
+.p2p-hero-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 56px 24px 72px;
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 48px;
+  align-items: center;
+}
+.p2p-hero-copy h1 {
+  font-size: clamp(30px, 4vw, 46px);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+.p2p-hero-copy p {
+  margin-top: 18px;
+  font-size: 16px;
+  color: var(--p2p-muted);
+  max-width: 46ch;
+}
+.p2p-cta {
+  display: inline-block;
+  margin-top: 28px;
+  background: var(--p2p-green);
+  color: #fff;
+  border-radius: 999px;
+  padding: 14px 32px;
+  font-size: 15px;
+  font-weight: 700;
+}
+.p2p-cta:hover { background: var(--p2p-green-dark); }
+.p2p-hero-card {
+  background: linear-gradient(160deg, var(--p2p-green) 0%, var(--p2p-green-dark) 100%);
+  border-radius: 20px;
+  padding: 48px 40px;
+  text-align: center;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+.p2p-hero-card-logo { font-size: 30px; font-weight: 300; letter-spacing: 0.2em; }
+.p2p-hero-card h2 { font-size: clamp(22px, 2.4vw, 30px); font-weight: 800; line-height: 1.25; }
+.p2p-hero-card p { font-size: 14px; opacity: 0.92; max-width: 40ch; }
+.p2p-hero-card-btn {
+  background: #fff;
+  color: var(--p2p-deep);
+  border-radius: 999px;
+  padding: 12px 34px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.p2p-media { background: #fff; padding: 48px 24px; text-align: center; }
+.p2p-media h2 { font-size: 24px; font-weight: 800; margin-bottom: 32px; }
+.p2p-media-strip {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  gap: 56px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.p2p-media-logo {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--p2p-deep);
+  opacity: 0.75;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.p2p-news { max-width: 1280px; margin: 0 auto; padding: 56px 24px 80px; }
+.p2p-news-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 28px; }
+.p2p-news-head h2 { font-size: 24px; font-weight: 800; }
+.p2p-news-head a { font-size: 14px; font-weight: 700; color: var(--p2p-green-dark); }
+.p2p-news-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+.p2p-news-card {
+  background: #fff;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px oklch(0.28 0.05 140 / 0.08);
+}
+.p2p-news-visual {
+  aspect-ratio: 4 / 3;
+  background: linear-gradient(150deg, var(--p2p-green) 0%, var(--p2p-deep) 100%);
+  display: grid;
+  place-items: center;
+}
+.p2p-news-visual span {
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.9;
+}
+.p2p-news-card h3 { padding: 16px 18px 20px; font-size: 15px; font-weight: 700; line-height: 1.35; }
+
+.p2p-footer {
+  border-top: 1px solid oklch(0.28 0.05 140 / 0.12);
+  padding: 40px 24px 48px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.p2p-footer p { font-size: 14px; color: var(--p2p-muted); }
+.p2p-footer small { font-size: 12px; color: var(--p2p-muted); }
+
+@media (max-width: 900px) {
+  .p2p-hero-inner { grid-template-columns: 1fr; padding: 36px 20px 48px; }
+  .p2p-news-grid { grid-template-columns: repeat(2, 1fr); }
+  .p2p-header-inner { gap: 16px; }
+  .p2p-actions { margin-left: 0; }
+}
+@media (max-width: 560px) {
+  .p2p-news-grid { grid-template-columns: 1fr; }
+  .p2p-badges { display: none; }
+}

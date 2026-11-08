@@ -119,7 +119,7 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
-  const isGold = useRouterState({ select: (s) => s.location.pathname.startsWith('/gold/') || ["/", "/auth", "/reset-password", "/admin-preview"].includes(s.location.pathname) });
+  const isGold = useRouterState({ select: (s) => s.location.pathname.startsWith('/gold/') || ["/", "/auth", "/reset-password", "/admin-preview", "/p2p"].includes(s.location.pathname) });
 
   return (
     <QueryClientProvider client={queryClient}>
