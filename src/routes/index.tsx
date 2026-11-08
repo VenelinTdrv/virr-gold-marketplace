@@ -7,6 +7,7 @@ import { AccountEntry, AccountPanel } from "@/components/shop/AccountPanel";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { LayoutDashboard } from "lucide-react";
+import { ViewSwitch } from "@/components/shop/ViewSwitch";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -55,7 +56,7 @@ function GoldShop() {
     s.src = "/gold/app.js";
     document.body.appendChild(s);
   }, []);
-  return <><UploadedStorefront />
+  return <><div className="store-view-switch"><ViewSwitch view="user" /></div><UploadedStorefront />
     {accountHost && createPortal(<AccountEntry onClick={() => setAccountOpen(true)} />, accountHost)}
     {adminHost && createPortal(<Button asChild variant="outline" className="admin-store-entry"><Link to="/admin-preview"><LayoutDashboard />Admin preview</Link></Button>, adminHost)}
     <Dialog open={accountOpen} onOpenChange={setAccountOpen}>
