@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { LayoutDashboard } from "lucide-react";
 import { ViewSwitch } from "@/components/shop/ViewSwitch";
 import { storefrontProducts, type StorefrontProduct } from "@/lib/shop/storefront-products";
+import { ProductDescriptions } from '@/components/shop/ProductDescriptions';
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -25,14 +26,16 @@ export const Route = createFileRoute("/")({
   component: GoldShop,
 });
 
-const UploadedStorefront = memo(({ product }: { product?: StorefrontProduct | undefined }) => <div dangerouslySetInnerHTML={{ __html: product ? goldMarkup.replace('<main>', `<main class="gold-product-page"><div class="breadcrumb"><a href="/">Инвестиционно злато</a><span>/</span>${product.name}</div><div id="productpage"></div><a class="textlink" href="/">← Към каталога</a></main><main hidden>`).replaceAll('href="#catalog"', 'href="/#catalog"').replaceAll('href="#guide"', 'href="/#guide"') : goldMarkup }} />);
+const UploadedStorefront = memo(({ product }: { product?: StorefrontProduct | undefined }) => <div dangerouslySetInnerHTML={{ __html: product ? goldMarkup.replace('<main>', `<main class="gold-product-page"><div class="breadcrumb"><a href="/">Инвестиционно злато</a><span>/</span>${product.name}</div><div id="productpage"></div><div id="productdescriptions"></div><a class="textlink" href="/">← Към каталога</a></main><main hidden>`).replaceAll('href="#catalog"', 'href="/#catalog"').replaceAll('href="#guide"', 'href="/#guide"') : goldMarkup }} />);
 
 export function GoldShop({ product }: { product?: StorefrontProduct | undefined }) {
   const navigate = useNavigate();
   const [accountHost, setAccountHost] = useState<HTMLElement | null>(null);
   const [adminHost, setAdminHost] = useState<HTMLElement | null>(null);
+  const [descriptionHost, setDescriptionHost] = useState<HTMLElement | null>(null);
   const [accountOpen, setAccountOpen] = useState(false);
   useEffect(() => {
+    setDescriptionHost(document.getElementById('productdescriptions'));
     const footer = document.querySelector('footer');
     if (footer) {
       const host = document.createElement('div');
@@ -72,6 +75,7 @@ export function GoldShop({ product }: { product?: StorefrontProduct | undefined 
     return () => { document.removeEventListener('click', onProductClick); };
   }, []);
   return <><UploadedStorefront product={product} />
+    {product && descriptionHost && createPortal(<ProductDescriptions product={product} />, descriptionHost)}
     {accountHost && createPortal(<><ViewSwitch view="user" /><AccountEntry onClick={() => setAccountOpen(true)} /></>, accountHost)}
     {adminHost && createPortal(<Button asChild variant="outline" className="admin-store-entry"><Link to="/admin-preview"><LayoutDashboard />Admin preview</Link></Button>, adminHost)}
     <Dialog open={accountOpen} onOpenChange={setAccountOpen}>

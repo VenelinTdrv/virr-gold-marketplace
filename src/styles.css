@@ -416,4 +416,12 @@
 .gold-product-page .productdetail .price { font-size:30px; margin-top:24px; }
 .gold-product-page .productdetail .primary { margin-top:20px; min-height:48px; }
 .gold-product-page .textlink { display:inline-block; margin:24px 0 0; }
+.gold-description { margin:32px 0; }
+.gold-description > h2 { font-family:var(--font-display); font-size:30px; margin-bottom:20px; }
+.gold-description-tabs { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); border-bottom:1px solid var(--border); }
+.gold-description-tabs button { height:auto; min-height:56px; white-space:normal; border-radius:0; border-bottom:3px solid transparent; color:var(--muted-foreground); padding:12px 8px; }
+.gold-description-tabs button[aria-selected="true"] { border-bottom-color:var(--primary); color:var(--primary); }
+.gold-description-panel { min-height:220px; padding:8px 0 24px; }
+.gold-description-copy { white-space:pre-wrap; overflow-wrap:anywhere; line-height:1.85; max-width:900px; }
+@media(max-width:650px) { .gold-description-tabs { grid-template-columns:repeat(2,minmax(0,1fr)); } .gold-description-tabs button { font-size:12px; } }
 @media(max-width:700px) { .gold-product-page h1 { font-size:32px; } .gold-product-page .productdetail { gap:24px; } .gold-product-page .productdetail .visual { height:auto; max-height:350px; } }
