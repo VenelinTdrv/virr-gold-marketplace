@@ -145,11 +145,11 @@ dialog{position:fixed;inset:0;margin:auto;width:min(850px,94vw);max-width:94vw;m
 .buyback label.check{flex-direction:row;align-items:flex-start;gap:8px}
 .buyback input:not([type=checkbox]),.buyback select{padding:10px;font:inherit;border-radius:6px;border:1px solid rgba(201,164,92,.4);background:transparent;color:inherit}
 .buyback select option{color:#222}
-.buyback aside{font-size:14px;line-height:1.6}
+.buyback .buybackinfo{font-size:14px;line-height:1.6}
 .buyback ol{padding-left:20px}
 .buybacksum{margin-top:16px;padding:16px;border:1px solid rgba(201,164,92,.3);border-radius:8px;display:grid;gap:10px}
 .buybacksum>div{display:flex;justify-content:space-between;align-items:center;gap:12px}
 .buybackitem .visual{width:70px;flex:none}
 .buyback small{text-align:center;opacity:.8}
 .formerror{color:#e88;min-height:1em;margin:0}
-@media(max-width:760px){.buyback{grid-template-columns:1fr}.buyback aside{order:-1}}
+@media(max-width:760px){.buyback{grid-template-columns:1fr}.buyback .buybackinfo{order:-1}}
