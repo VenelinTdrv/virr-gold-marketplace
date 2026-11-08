@@ -49,3 +49,7 @@
 - [x] Show four description tabs on every storefront product page.
 - [x] Read matching article descriptions in the browser-local demo without changing ERP prices or stock.
 - [x] Verify article saving, product readback, refresh and mobile layout.
+
+# Delivery status examples
+- [x] Show delivery within three weeks for three sample products across catalog, detail and comparison without changing stock or ordering.
+- [x] Verify the status on desktop and mobile.
