@@ -1,8 +1,36 @@
 import { describe, expect, it } from 'vitest';
 import { adminItems } from '@/lib/shop/admin-sections';
-import { initialDemoData, fieldsFor, saveDemoRecord, deleteDemoRecords, validateRecord, restoreDemoData } from '@/lib/shop/admin-demo';
+import { initialDemoData, fieldsFor, saveDemoRecord, deleteDemoRecords, validateRecord, restoreDemoData, isDemoFieldVisible } from '@/lib/shop/admin-demo';
 
 describe('Isolated demonstration CRUD', () => {
+  it.each(['Физическо лице', 'Юридическо лице'])('saves and restores a customer of type %s', type => {
+    const data = initialDemoData(); const fields = fieldsFor('customers', data);
+    const values = ['NEW-C', 'Тест клиент', type, '', '', '0888000000', 'demo@example.com', 'Тест адрес', 'Тест фирма', '123456789', 'Представител'];
+    expect(fields[2]?.options).toEqual(['Физическо лице', 'Юридическо лице']);
+    expect(validateRecord(fields, values, [])).toBeNull();
+    const restored = restoreDemoData(JSON.stringify(saveDemoRecord(data, 'customers', values, 'new-c')));
+    expect(restored?.customers?.find(r => r.key === 'new-c')?.values).toEqual([...values.slice(0,8), ...(type === 'Юридическо лице' ? values.slice(8) : ['', '', ''])]);
+    const companyField = fields[8];
+    if (!companyField) throw new Error('Missing company field');
+    expect(isDemoFieldVisible(companyField, values)).toBe(type === 'Юридическо лице');
+  });
+  it('requires company name and EIK only for legal entities', () => {
+    const fields = fieldsFor('customers', initialDemoData());
+    const values = ['NEW', 'Клиент', 'Физическо лице', '', '', '', '', '', '', '', ''];
+    expect(validateRecord(fields, values, [])).toBeNull();
+    values[2] = 'Юридическо лице';
+    expect(validateRecord(fields, values, [])).toContain('Име на фирма');
+    values[8] = 'Фирма';
+    expect(validateRecord(fields, values, [])).toContain('ЕИК');
+    values[9] = '123456789';
+    expect(validateRecord(fields, values, [])).toBeNull();
+  });
+  it('upgrades old customers without losing their type and existing values', () => {
+    const data = initialDemoData(); data.customers = data.customers?.map(r => ({...r, values:r.values.slice(0,5)}));
+    const restored = restoreDemoData(JSON.stringify(data));
+    expect(restored?.customers?.map(r => r.values.slice(0,5))).toEqual(data.customers?.map(r => r.values));
+    expect(restored?.customers?.every(r => r.values.length === 11)).toBe(true);
+  });
   it.each(adminItems.map(item => item.id))('creates, edits, restores and deletes in %s without changing fixtures', section => {
     const original = initialDemoData();
     const fields = fieldsFor(section, original);
