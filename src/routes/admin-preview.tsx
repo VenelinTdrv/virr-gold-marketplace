@@ -4,6 +4,7 @@ import { Menu, Search, X, ChevronDown, ChevronRight, Folder, Eye, ArrowLeft, Pen
 import { Button } from '@/components/ui/button';
 import { ViewSwitch } from '@/components/shop/ViewSwitch';
 import { fmt } from '@/lib/shop/products';
+import { adminProducts } from '@/lib/shop/admin-products';
 import { AdminDemoDialog } from '@/components/shop/AdminDemoDialog';
 import { DEMO_STORAGE_KEY, initialDemoData, restoreDemoData, fieldsFor, saveDemoRecord, deleteDemoRecords, type DemoData, type DemoRecord } from '@/lib/shop/admin-demo';
 import { adminGroups, adminItems, isAdminSection, type AdminSection } from '@/lib/shop/admin-sections';
@@ -72,7 +73,7 @@ function AdminPreview() {
   const rows = sectionRows.filter(row => matches(row.values.join(' '), query.name) && matches(row.values[0] ?? '', query.code) && (!productView || category === 'all' || row.values[2] === category));
   const ids = rows.map(r => r.key);
   function viewRecord(record: DemoRecord) {
-    setDetail({ title: record.values[1] ?? record.values[0] ?? '', values: fields.map((field, i): [string, string] => [field.label, record.values[i] || '—']) });
+    setDetail({ title: record.values[1] ?? record.values[0] ?? '', values: fields.map((field, i): [string, string] => [field.label, productView && i === 7 ? `${record.values[i]} г (${(Number(record.values[i])/31.1035).toLocaleString('bg-BG',{maximumFractionDigits:3})} oz)` : productView && (i === 4 || i === 5) ? (record.values[i] ? fmt(Number(record.values[i])) : '—') : record.values[i] || '—']) });
   }
   function openNew() {
     setName(''); setCode(''); setQuery({ name: '', code: '' }); setCategory('all'); setDetail(null); setEditor({});

@@ -30,6 +30,6 @@
 - [x] Verify all six screens, search, details and refresh persistence.
 
 # Demonstration CMS CRUD
-- [ ] Add isolated demo records and forms for create, read, update and confirmed delete in every visible menu.
-- [ ] Preserve demo changes on refresh and allow restoring examples without modifying the storefront or ERP.
-- [ ] Test record validation and verify CRUD across all menus and mobile layout.
+- [x] Add isolated demo records and forms for create, read, update and confirmed delete in every visible menu.
+- [x] Preserve demo changes on refresh and allow restoring examples without modifying the storefront or ERP.
+- [x] Test record validation and verify CRUD across all menus and mobile layout.
