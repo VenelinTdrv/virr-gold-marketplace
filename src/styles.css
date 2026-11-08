@@ -403,3 +403,6 @@
 @media(max-width:650px) { header:has(.account-host) .header-actions { width:100%; justify-content:flex-start; } }
 @media(max-width:650px) { .erp-header-actions { gap:8px; } .erp-header-actions > span { display:none; } .view-switch button { min-width:66px; padding:0 8px; } }
 .erp-actions-menu { --popover: oklch(1 0 0); --popover-foreground: oklch(0.27 0.015 165); --accent: oklch(0.94 0.025 160); --accent-foreground: oklch(0.43 0.092 166); --destructive: oklch(0.53 0.18 25); --border: oklch(0.91 0.007 160); font-family: inherit; min-width: 160px; }
+.erp-actions-menu.erp-actions-menu { background: oklch(1 0 0); color: oklch(0.27 0.015 165); border-color: oklch(0.91 0.007 160); box-shadow: 0 8px 24px oklch(0.27 0.015 165 / 0.12); }
+.erp-actions-menu [role="menuitem"]:focus, .erp-actions-menu [role="menuitem"]:hover { background: oklch(0.94 0.025 160); color: oklch(0.43 0.092 166); }
+.erp-actions-menu [role="menuitem"].text-destructive { color: oklch(0.53 0.18 25); }
