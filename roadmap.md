@@ -33,3 +33,6 @@
 - [x] Add isolated demo records and forms for create, read, update and confirmed delete in every visible menu.
 - [x] Preserve demo changes on refresh and allow restoring examples without modifying the storefront or ERP.
 - [x] Test record validation and verify CRUD across all menus and mobile layout.
+# Customer type in admin preview
+- [x] Add individual/company selection and company fields without affecting real accounts.
+- [x] Verify saving, editing and refresh for both client types and migrate existing demo records.
