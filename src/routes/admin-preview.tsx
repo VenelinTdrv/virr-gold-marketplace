@@ -26,8 +26,8 @@ function AdminPreview() {
   useEffect(() => {
     // The uploaded shop stylesheet has global selectors and survives client navigation.
     const shopStyles = Array.from(document.querySelectorAll<HTMLLinkElement>('link[rel="stylesheet"]')).filter(link => link.href.endsWith('/gold/custom.css'));
-    for (const link of shopStyles) link.disabled = true;
-    return () => { for (const link of shopStyles) link.disabled = false; };
+    for (const link of shopStyles) { link.disabled = true; if (link.sheet) link.sheet.disabled = true; }
+    return () => { for (const link of shopStyles) { link.disabled = false; if (link.sheet) link.sheet.disabled = false; } };
   }, []);
   const { section = 'products' } = Route.useSearch();
   const navigate = useNavigate();
