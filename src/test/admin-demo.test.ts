@@ -26,7 +26,7 @@ describe('Isolated demonstration CRUD', () => {
     expect(validateRecord(fields, values, [])).toBeNull();
   });
   it('upgrades old customers without losing their type and existing values', () => {
-    const data = initialDemoData(); data.customers = data.customers?.map(r => ({...r, values:r.values.slice(0,5)}));
+    const data = initialDemoData(); data.customers = (data.customers ?? []).map(r => ({...r, values:r.values.slice(0,5)}));
     const restored = restoreDemoData(JSON.stringify(data));
     expect(restored?.customers?.map(r => r.values.slice(0,5))).toEqual(data.customers?.map(r => r.values));
     expect(restored?.customers?.every(r => r.values.length === 11)).toBe(true);
